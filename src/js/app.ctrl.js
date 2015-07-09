@@ -40,6 +40,9 @@ app.controller("MainController", function($scope, $http){
       .success(function(response)
       {
         console.log(response);
+        items.clear();
+        items.add(response);
+        timeline.fit();
       });
 
     vm.content = stuff.items[0];
