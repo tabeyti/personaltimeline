@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+    <link rel="stylesheet" href="https://material.angularjs.org/latest/angular-material.min.css">
+
+    <link href="lib\angular-xeditable\xeditable.css" rel="stylesheet">
+    <script src="lib/angular-xeditable/xeditable.js"></script>
+
+
+    <script src="lib/vis/vis.js"></script>
+  	<link href="lib/vis/vis.css" rel="stylesheet" type="text/css" />
+
+    <script src="src/js/app.ctrl.js"></script>
+  </head>
+  <body ng-app="app">
+    <div ng-controller="ElementDisplayController">
+      <a href="#" editable-textarea="itemDisplay.desc" e-rows="7" e-cols="40">
+        <pre>{{itemDisplay.desc || 'no description'}}</pre>
+      </a>
+    </div>
+    <div ng-controller="MainController as main">
+      <div>
+        <div id="visualization"></div>
+      </div>
+    </div>
+  </body>
+</html>
