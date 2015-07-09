@@ -9,22 +9,22 @@ Blank
 ## To Do
 * Create custom item template in vis.js.
 * Create item/event JSON structure.
-** May include item display panel data as well.
+  * May include item display panel data as well.
 * Determine how new items are going to be created:
-** Double click?
-** Dialogue window?
-** Edit pane in Item Display Window?
-** Edit button for editing slider data?
+  * Double click?
+  * Dialogue window?
+  * Edit pane in Item Display Window?
+  * Edit button for editing slider data?
 * Item Display Window
-** Add event listener for item selection/click.
-** Create alternate panel above slider
-** Update panel in slider after item event click.
+  * Add event listener for item selection/click.
+  * Create alternate panel above slider
+  * Update panel in slider after item event click.
 * Create Overview Panel for Navigation/Editing
 
 * Structure
-** Period
-** Event
-** Day
+  * Period
+  * Event
+  * Day
 
 ## Browser support
 
