@@ -1,14 +1,30 @@
 var app = angular.module("app", ["xeditable"]);
 
-app.run(function(editableOptions) {
-  editableOptions.theme = 'bs3';
+/*
+  Shared services between app controllers
+*/
+app.factory('sharedService', function($rootScope){
+  var sharedService = {};
+  sharedService.prepForPublish = function(msg) {
+    this.sharedId = msg;
+    this.publishId();
+  };
+
+  sharedService.publishId = function() {
+    $rootScope.$broadcast('handlePublish');
+  };
+  return sharedService;
 });
 
-app.controller("MainController", function($scope, $http){
-    var vm = this;
-    vm.title = 'Personal Timeline';
-    vm.content = 'asdfasdf';
+/*
+  CONTROLLERS
+*/
+app.controller("MainController", function($scope, $http, sharedService){
+  var vm = this;
+  vm.title = 'Personal Timeline';
+  vm.content = 'asdfasdf';
 
+  // VIS TIMELINE SETUP
   var items = new vis.DataSet({
     type: { start: 'ISODate', end: 'ISODate' }
   });
@@ -46,15 +62,22 @@ app.controller("MainController", function($scope, $http){
       });
 
     vm.content = stuff.items[0];
+    sharedService.msg = stuff.items[0];
+    sharedService.publishId();
     $scope.$apply();
   });
 
 });
 
-app.controller("ElementDisplayController", function($scope, $filter)
-{
-  $scope.itemDisplay =
-  {
+app.controller("ItemDisplayController", function($scope, $filter, sharedService){
+  $scope.$on('handlePublish', function(){
+    $scope.itemDisplay = {
+      desc: sharedService.msg
+    };
+    $scope.$apply();
+  });
+
+  $scope.itemDisplay = {
     desc: 'Bacon is king\nyes'
   };
 });
