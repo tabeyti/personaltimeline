@@ -22,7 +22,7 @@ app.factory('sharedService', function($rootScope){
 app.controller("MainController", function($scope, $http, sharedService){
   var vm = this;
   vm.title = 'Personal Timeline';
-  vm.content = 'asdfasdf';
+  var clickedTime = '';
 
   // VIS TIMELINE SETUP
   var items = new vis.DataSet({
@@ -37,7 +37,12 @@ app.controller("MainController", function($scope, $http, sharedService){
     height: '300px',
     multiselect: false,
     // allow manipulation of items
-    editable: true,
+    editable: {
+      add: false,
+      remove: true,
+      updateTime: true,
+      updateGroup: true
+    },
     showCurrentTime: true
   };
   var timeline = new vis.Timeline(container, items, options);
@@ -63,7 +68,9 @@ app.controller("MainController", function($scope, $http, sharedService){
   // register item select listener, so when an item is clicked, content
   // is displayed above the timeline
   timeline.on('select', function(stuff) {
-    console.log('Item clicked: ' + stuff);
+    sharedService.msg = 'Item: ' + stuff.items[0];
+    sharedService.publishId();
+    $scope.$apply();
     // $http.get("http://172.248.208.18:8000/ptl/process.php?method=getItem&id="+ stuff.items[0])
     //   .success(function(response) {
     //     vm.content = 'Id: ' + stuff.items[0];
@@ -73,7 +80,9 @@ app.controller("MainController", function($scope, $http, sharedService){
     //   });
   });
   timeline.on('contextmenu', function(props) {
+      console.log(props);
       timeline.setSelection(props.item);
+      clickedTime = props.snappedTime;
     });
 
   // context-menu
@@ -82,13 +91,13 @@ app.controller("MainController", function($scope, $http, sharedService){
     if (timeline.getSelection().length == 0) {
       return [
         ['Add Range', function ($itemScope) {
-          //items.add({"content": "blank"});
+          items.add({"content": "blank", start: clickedTime, end: clickedTime, type:"range"});
         }],
         ['Add Box', function ($itemScope) {
-
+          items.add({"content": "blank", start: clickedTime, type:"box"});
         }],
         ['Add Point', function ($itemScope) {
-
+          items.add({"content": "blank", start: clickedTime, type:"point"});
         }]
       ];
     }

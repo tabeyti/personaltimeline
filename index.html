@@ -16,7 +16,9 @@
     <script src="lib/vis/vis.js"></script>
   	<link href="lib/vis/vis.css" rel="stylesheet" type="text/css" />
 
+    <script src="js/contextMenu.js"></script>
     <script src="js/app.js"></script>
+
   </head>
   <body ng-app="app">
     <div ng-controller="ItemDisplayController as itemDisplay">
@@ -24,7 +26,7 @@
         <pre>{{itemDisplay.desc || 'no description'}}</pre>
       </a>
     </div>
-    <div ng-controller="MainController as main">
+    <div ng-controller="MainController as main" context-menu="menuOptions(item)">
       <div>
         <div id="visualization"></div>
       </div>
