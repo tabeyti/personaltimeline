@@ -8,7 +8,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
-    <link rel="stylesheet" href="https://material.angularjs.org/latest/angular-material.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.css">
 
     <link href="lib/angular-xeditable/xeditable.css" rel="stylesheet">
     <script src="lib/angular-xeditable/xeditable.js"></script>
@@ -21,16 +24,33 @@
 
   </head>
   <body ng-app="app">
-    <div ng-controller="ItemDisplayController as itemDisplay">
-      <a href="#" editable-textarea="itemDisplay.desc" e-rows="7" e-cols="40">
-        <pre>{{itemDisplay.desc || 'no description'}}</pre>
-      </a>
-    </div>
     <div ng-controller="MainController as main" context-menu="menuOptions(item)">
+      <md-content layout-padding style="height: 200px;padding: 24px;" layout-align="left center">
+        <pre>{{main.itemDump}}</pre>
+      </md-content>
       <div>
         <div id="visualization"></div>
       </div>
+      <md-content>
+        <section layout="row" layout-sm="column" layout-align="left center">
+          <md-button class="md-raised md-primary">Save</md-button>
+          <md-button class="md-raised" ng-click="main.getData()">JSON</md-button>
+        </section>
+      </md-content>
     </div>
-    <script>console.log('something');</script>
+    <div ng-controller="ItemDisplayController as itemDisplay" layout-padding style="height: 600px;">
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <md-button class="md-icon-button" aria-label="Edit">
+            <md-icon md-svg-icon="img/settings-icon.png" ng-class="font.theme"></md-icon>
+          </md-button>
+          <h2><span>{{itemDisplay.title}}</span></h2>
+        </div>
+      </md-toolbar>
+      <md-content layout layout-align="left center">
+          <pre>{{itemDisplay.journal || 'no description'}}</pre>
+        <!-- </a> -->
+      </md-content>
+  </div>
   </body>
 </html>

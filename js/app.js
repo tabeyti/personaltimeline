@@ -1,4 +1,4 @@
-var app = angular.module("app", ["xeditable", "ui.bootstrap.contextMenu"]);
+var app = angular.module("app", ['xeditable', 'ui.bootstrap.contextMenu', 'ngMaterial']);
 
 /*
   Shared services between app controllers
@@ -11,6 +11,7 @@ app.factory('sharedService', function($rootScope){
   };
 
   sharedService.publishId = function() {
+    console.log('item published');
     $rootScope.$broadcast('handlePublish');
   };
   return sharedService;
@@ -22,16 +23,20 @@ app.factory('sharedService', function($rootScope){
 app.controller("MainController", function($scope, $http, sharedService){
   var vm = this;
   vm.title = 'Personal Timeline';
-  var clickedTime = '';
+  var itemTitle = '';
+  var itemContent = '';
 
-  // VIS TIMELINE SETUP
+  var clickedTime = '';
+  var nextId = 1;
+  var itemDump = '';
+
+
+  // create item structure for timeline
   var items = new vis.DataSet({
     type: { start: 'ISODate', end: 'ISODate' }
   });
 
-  // add items to the DataSet
-  items.add([]);
-
+  // register timeline
   var container = document.getElementById('visualization');
   var options = {
     height: '300px',
@@ -39,7 +44,7 @@ app.controller("MainController", function($scope, $http, sharedService){
     // allow manipulation of items
     editable: {
       add: false,
-      remove: true,
+      remove: false,
       updateTime: true,
       updateGroup: true
     },
@@ -47,28 +52,42 @@ app.controller("MainController", function($scope, $http, sharedService){
   };
   var timeline = new vis.Timeline(container, items, options);
 
+  // // reteive items from server
   // $http.get("http://172.248.208.18:8000/ptl/process.php?method=getTimeline")
   //   .success(function(response) {
   //     console.log(response);
   //     items.clear();
   //     items.add(response);
   //     timeline.fit();
+  //
+  //     // find the nextId id
+  //     items.forEach(function(element) {
+  //       if (nextId <= element.id) {
+  //         nextId = element.id + 1;
+  //       }
+  //     });
   //   });
 
-  function saveData() {
+  function getNextId() {
+    return nextId++;
+  };
+
+  vm.getData = function() {
     var data = items.get({
       type: {
         start: 'ISODate',
         end: 'ISODate'
       }
     });
-    return JSON.stringify(data, null, 2);
+    vm.itemDump = JSON.stringify(data, null, 2);
+    console.log(itemDump);
+    return itemDump;
   };
 
   // register item select listener, so when an item is clicked, content
   // is displayed above the timeline
   timeline.on('select', function(stuff) {
-    sharedService.msg = 'Item: ' + stuff.items[0];
+    sharedService.prepForPublish('Item: ' + stuff.items[0]);
     sharedService.publishId();
     $scope.$apply();
     // $http.get("http://172.248.208.18:8000/ptl/process.php?method=getItem&id="+ stuff.items[0])
@@ -91,13 +110,13 @@ app.controller("MainController", function($scope, $http, sharedService){
     if (timeline.getSelection().length == 0) {
       return [
         ['Add Range', function ($itemScope) {
-          items.add({"content": "blank", start: clickedTime, end: clickedTime, type:"range"});
+          items.add({"id": getNextId(), "content": "blank", start: clickedTime, end: clickedTime, type:"range"});
         }],
         ['Add Box', function ($itemScope) {
-          items.add({"content": "blank", start: clickedTime, type:"box"});
+          items.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"box"});
         }],
         ['Add Point', function ($itemScope) {
-          items.add({"content": "blank", start: clickedTime, type:"point"});
+          items.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"point"});
         }]
       ];
     }
@@ -117,12 +136,14 @@ app.controller("MainController", function($scope, $http, sharedService){
 app.controller("ItemDisplayController", function($scope, $filter, sharedService){
   $scope.$on('handlePublish', function(){
     $scope.itemDisplay = {
-      desc: sharedService.msg
+      title: sharedService.sharedId,
+      journal: sharedService.sharedId
     };
     $scope.$apply();
   });
 
   $scope.itemDisplay = {
-    desc: 'Bacon is king\nyes'
+    title: 'Something',
+    journal: 'alksdjf;alksdjf;laksjdf;laksjdf;laksjdf;lkasjdf;lkasjdf;lkjasdf'
   };
 });
