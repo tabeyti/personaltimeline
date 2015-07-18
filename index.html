@@ -38,11 +38,38 @@
         </section>
       </md-content>
     </div>
-    <div ng-controller="ItemDisplayController as itemDisplay" layout-padding style="height: 600px;">
+    <div ng-controller="ItemInfoController as itemDisplay" layout-padding style="height: 600px;">
+      <script type="text/ng-template" id="item.dialog.html">
+      <md-dialog  aria-label="Item Edit Dialog">
+        <form>
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <h2>{{item.title}}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="answer('not applicable')">
+              Close
+            </md-button>
+          </div>
+        </md-toolbar>
+        <md-dialog-content>
+          <textarea>
+            {{item.journal}}
+          </textarea>
+        </md-dialog-content>
+        <div class="md-actions" layout="row">
+          <span flex></span>
+          <md-button ng-click="" class="md-primary">
+           Save
+          </md-button>
+        </div>
+        </form>
+      </md-dialog>
+      </script>
+
       <md-toolbar>
         <div class="md-toolbar-tools">
-          <md-button class="md-icon-button" aria-label="Edit">
-            <md-icon md-svg-icon="img/settings-icon.png" ng-class="font.theme"></md-icon>
+          <md-button class="md-icon-button" ng-click="showItemEdit($event)" ng-disabled="!editEnabled" aria-label="Edit">
+            <md-icon md-svg-icon="https://upload.wikimedia.org/wikipedia/commons/7/77/Gear_icon.svg" ng-class="font.theme"></md-icon>
           </md-button>
           <h2><span>{{itemDisplay.title}}</span></h2>
         </div>
