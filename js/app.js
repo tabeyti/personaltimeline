@@ -69,13 +69,8 @@ app.controller("MainController", function($scope, $http, sharedService){
       });
     });
 
-  function getNextId() {
-    return nextId++;
-  };
-
-  function getLastId() {
-    return nextId - 1;
-  }
+  function getNextId() { return nextId++; };
+  function getLastId() { return nextId - 1; };
 
   vm.getData = function() {
     var data = items.get({
@@ -104,7 +99,6 @@ app.controller("MainController", function($scope, $http, sharedService){
   });
 
   timeline.on('contextmenu', function(props) {
-    console.log(props);
     timeline.setSelection(props.item);
     clickedTime = props.snappedTime;
 
@@ -112,7 +106,7 @@ app.controller("MainController", function($scope, $http, sharedService){
       sharedService.broadcast(0, 'nullSelect', false, "");
     }
     else {
-      sharedService.broadcast(props.item, 'itemSelect', false, timeline.getSelection()[0].content);
+      sharedService.broadcast(props.item, 'itemSelect', false,items.get(props.item).content);
     }
   });
 
@@ -143,6 +137,9 @@ app.controller("MainController", function($scope, $http, sharedService){
     // item context menu
     else {
       return [
+        ['Edit', function ($itemScope) {
+          sharedService.broadcast(getLastId(), 'editItem', false);
+        }],
         ['Delete', function ($itemScope) {
           items.remove(timeline.getSelection()[0]);
           sharedService.broadcast(0, 'nullSelect', false);
@@ -157,10 +154,6 @@ app.controller("MainController", function($scope, $http, sharedService){
 ////////////////////////////////////////////////////////////////////////////////
 app.controller("ItemInfoController", function($scope, $mdDialog, $http, sharedService){
   var vm = this;
-  var item = {
-    title: 'blank',
-    journal: ''
-  };
   $scope.editEnabled = false;
   $scope.itemDisplay = {
     title: '',
@@ -168,38 +161,50 @@ app.controller("ItemInfoController", function($scope, $mdDialog, $http, sharedSe
   };
 
   $scope.$on('handlePublish', function(){
-    if (sharedService.bcEvent == 'nullSelect') {
-      // if background is selected, don't show anything and disable edit icon
-      $scope.editEnabled = false;
-    }
-    else {
-      $http.get("http://172.248.208.18:8000/ptl/process.php?method=getItem&id="+ sharedService.sharedId)
-        .success(function(response, status) {
-          console.log(status);
-          if (status == 204) {
-            $scope.itemDisplay = {
-              title: 'blank',
-              journal: ''
-            };
-          }
-          else {
-            $scope.itemDisplay = {
-              title: sharedService.title,
-              journal: response['journal']
-            };
-            item.title = sharedService.title;
-            item.journal = response['journal'];
-          }
-          //sharedService.journal = response['journal'];
-          //$scope.$apply();
-        });
-      $scope.editEnabled = true;
+    // handle event based on type
+    switch (sharedService.bcEvent)
+    {
+      case 'nullSelect':
+        $scope.itemDisplay = {
+          title: '',
+          journal: ''
+        };
+        $scope.editEnabled = false;
+        break;
+      case 'editItem':
+        $scope.showItemEdit(this);
+        break;
+      default:
+        LoadItemData();
+        break;
     }
 
     if(!$scope.$$phase) {
       $scope.$apply();
     }
   });
+
+  function LoadItemData() {
+    $http.get("http://172.248.208.18:8000/ptl/process.php?method=getItem&id="+ sharedService.sharedId)
+      .success(function(response, status) {
+        console.log('Response: ' + response + ' Status: ' + status);
+        if (status == 204) {
+          $scope.itemDisplay = {
+            title: 'blank',
+            journal: ''
+          };
+        }
+        else {
+          console.log('Response: ' + response);
+          $scope.itemDisplay = {
+            title: sharedService.title,
+            journal: response['journal']
+          };
+        }
+      });
+    $scope.editEnabled = true;
+  }
+
 
   $scope.showItemEdit = function(ev) {
     $mdDialog.show({
@@ -208,7 +213,7 @@ app.controller("ItemInfoController", function($scope, $mdDialog, $http, sharedSe
       parent: angular.element(document.body),
       targetEvent: ev,
       locals: {
-        item: item
+        item: $scope.itemDisplay
       },
     })
     .then(function(answer) {
