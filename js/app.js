@@ -24,10 +24,7 @@ app.controller("MainController", function($scope, $http, sharedService){
   vm.title = 'Personal Timeline';
   var itemTitle = '';
   var itemContent = '';
-
-  var clickedTime = '';
   var nextId = 1;
-  var itemDump = '';
 
 
   // create item structure for timeline
@@ -118,7 +115,9 @@ app.controller("MainController", function($scope, $http, sharedService){
     if (timeline.getSelection().length == 0) {
       return [
         ['Add Range', function ($itemScope) {
-          items.add({"id": getNextId(), "content": "blank", start: clickedTime, end: clickedTime, type:"range"});
+          var rangeSize = (timeline.getWindow().end.getTime() - timeline.getWindow().start.getTime())/5;
+          var endDate = new Date(clickedTime.getTime()+rangeSize);
+          items.add({"id": getNextId(), "content": "blank", start: clickedTime, end: endDate, type:"range"});
           timeline.setSelection(getLastId());
           sharedService.broadcast(getLastId(), 'itemAdd', true, "blank");
         }],
