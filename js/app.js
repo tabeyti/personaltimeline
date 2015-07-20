@@ -1,4 +1,4 @@
-var app = angular.module("app", ['xeditable', 'ui.bootstrap.contextMenu', 'ngMaterial']);
+var app = angular.module("app", ['ui.bootstrap.contextMenu', 'ngMaterial']);
 
 /*
   Shared services between app controllers
@@ -6,11 +6,10 @@ var app = angular.module("app", ['xeditable', 'ui.bootstrap.contextMenu', 'ngMat
 app.factory('sharedService', function($rootScope){
   var sharedService = {};
 
-  sharedService.broadcast = function(id, bcEvent, isNewItem, title) {
-    this.sharedId = id;
+  sharedService.broadcast = function(item, bcEvent, isNewItem) {
+    this.item = item;
     this.bcEvent = bcEvent;
     this.isNewItem = isNewItem;
-    this.title = title;
     $rootScope.$broadcast('handlePublish');
   };
   return sharedService;
@@ -76,8 +75,7 @@ app.controller("MainController", function($scope, $http, sharedService){
         end: 'ISODate'
       }
     });
-    vm.itemDump = JSON.stringify(data, null, 2);
-    return itemDump;
+    return JSON.stringify(data, null, 2);
   };
 
   // ===========================================================================
@@ -91,7 +89,7 @@ app.controller("MainController", function($scope, $http, sharedService){
       sharedService.broadcast(0, 'nullSelect', false);
     }
     else {
-      sharedService.broadcast(stuff.items[0], 'itemSelect', false, items.get(stuff.items[0]).content);
+      sharedService.broadcast(items.get(stuff.items[0]), 'itemSelect', false);
     }
   });
 
@@ -103,7 +101,7 @@ app.controller("MainController", function($scope, $http, sharedService){
       sharedService.broadcast(0, 'nullSelect', false, "");
     }
     else {
-      sharedService.broadcast(props.item, 'itemSelect', false,items.get(props.item).content);
+      sharedService.broadcast(items.get(props.item), 'itemSelect', false);
     }
   });
 
@@ -112,24 +110,25 @@ app.controller("MainController", function($scope, $http, sharedService){
   // ===========================================================================
   $scope.menuOptions = function(item) {
     // timeline background context menu
+    console.log(vm.getData());
     if (timeline.getSelection().length == 0) {
       return [
         ['Add Range', function ($itemScope) {
           var rangeSize = (timeline.getWindow().end.getTime() - timeline.getWindow().start.getTime())/5;
           var endDate = new Date(clickedTime.getTime()+rangeSize);
-          items.add({"id": getNextId(), "content": "blank", start: clickedTime, end: endDate, type:"range"});
+          items.add({"id": getNextId(), "content": "blank", start: clickedTime, end: endDate, type:"range", journal:""});
           timeline.setSelection(getLastId());
-          sharedService.broadcast(getLastId(), 'itemAdd', true, "blank");
+          sharedService.broadcast(items.get(getLastId()), 'itemAdd', true);
         }],
         ['Add Box', function ($itemScope) {
-          items.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"box"});
+          items.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"box", journal:""});
           timeline.setSelection(getLastId());
-          sharedService.broadcast(getLastId(), 'itemAdd', true, "blank");
+          sharedService.broadcast(items.get(getLastId()), 'itemAdd', true);
         }],
         ['Add Point', function ($itemScope) {
-          items.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"point"});
+          items.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"point", journal:""});
           timeline.setSelection(getLastId());
-          sharedService.broadcast(getLastId(), 'itemAdd', true, "blank");
+          sharedService.broadcast(items.get(getLastId()), 'itemAdd', true);
         }]
       ];
     }
@@ -184,25 +183,26 @@ app.controller("ItemInfoController", function($scope, $mdDialog, $http, sharedSe
   });
 
   function LoadItemData() {
-    $http.get("http://172.248.208.18:8000/ptl/process.php?method=getItem&id="+ sharedService.sharedId)
-      .success(function(response, status) {
-        console.log('Response: ' + response + ' Status: ' + status);
-        if (status == 204) {
-          $scope.itemDisplay = {
-            title: 'blank',
-            journal: ''
-          };
-        }
-        else {
-          console.log('Response: ' + response);
-          $scope.itemDisplay = {
-            title: sharedService.title,
-            journal: response['journal']
-          };
-        }
-      });
+    // pull item id data
+    // $http.get("http://172.248.208.18:8000/ptl/process.php?method=getItem&id="+ sharedService.sharedId)
+    //   .success(function(response, status) {
+    //     if (status == 204) {
+    //       $scope.itemDisplay = {
+    //         title: 'blank',
+    //         journal: ''
+    //       };
+    //     }
+    //     else {
+    //       $scope.itemDisplay = {
+    //         title: sharedService.title,
+    //         journal: response['journal']
+    //       };
+    //     }
+    //   });
+    $scope.itemDisplay.title = sharedService.item.content;
+    $scope.itemDisplay.journal = sharedService.item.journal;
     $scope.editEnabled = true;
-  }
+  };
 
 
   $scope.showItemEdit = function(ev) {
