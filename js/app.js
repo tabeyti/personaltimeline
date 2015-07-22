@@ -202,6 +202,7 @@ app.controller("ItemInfoController", function($scope, $mdDialog, $http, sharedSe
     $scope.itemDisplay.title = sharedService.item.content;
     $scope.itemDisplay.journal = sharedService.item.journal;
     $scope.editEnabled = true;
+    console.log($scope.itemDisplay);
   };
 
 

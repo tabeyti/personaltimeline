@@ -13,9 +13,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.css">
 
-    <link href="lib/angular-xeditable/xeditable.css" rel="stylesheet">
-    <script src="lib/angular-xeditable/xeditable.js"></script>
-
     <script src="lib/vis/vis.js"></script>
   	<link href="lib/vis/vis.css" rel="stylesheet" type="text/css" />
 
@@ -46,9 +43,7 @@
           </div>
         </md-toolbar>
         <md-dialog-content>
-          <textarea name="textarea" rows="10" cols="70">
-            {{item.journal}}
-          </textarea>
+          <textarea class='form-control' rows="10" cols="70" style='min-height:200px;'>{{item.journal}}</textarea>
         </md-dialog-content>
         <div class="md-actions" layout="row">
           <span flex></span>
