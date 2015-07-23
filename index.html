@@ -33,14 +33,10 @@
       <script type="text/ng-template" id="item.dialog.html">
       <md-dialog  aria-label="Item Edit Dialog">
         <form>
-        <md-toolbar>
-          <div class="md-toolbar-tools">
-            <h2>{{item.title}}</h2>
-            <span flex></span>
-            <md-button class="md-icon-button" ng-click="answer('not applicable')">
-              X
-            </md-button>
-          </div>
+        <md-toolbar layout-padding>
+          <md-input-container>
+             <input ng-model="item.content" aria-label="Title" style="color:white">
+           </md-input-container>
         </md-toolbar>
         <md-dialog-content>
           <md-input-container flex>
@@ -51,6 +47,7 @@
         <div class="md-actions" layout="row">
           <span flex></span>
           <md-button ng-click="answer('save')" class="md-primary">Save</md-button>
+          <md-button ng-click="answer('cancel')" class="md-primary">Cancel</md-button>
         </div>
         </form>
       </md-dialog>
@@ -61,11 +58,11 @@
           <md-button class="md-icon-button" ng-click="showItemEdit($event)" ng-disabled="!editEnabled" aria-label="Edit">
             <md-icon md-svg-icon="https://upload.wikimedia.org/wikipedia/commons/7/77/Gear_icon.svg" ng-class="font.theme"></md-icon>
           </md-button>
-          <h2><span>{{itemDisplay.title}}</span></h2>
+          <h2><span>{{item.content}}</span></h2>
         </div>
       </md-toolbar>
       <md-content layout layout-align="left center">
-          <pre style="width: 100%;">{{itemDisplay.journal || 'no description'}}</pre>
+          <pre style="width: 100%;">{{item.journal || 'no description'}}</pre>
         <!-- </a> -->
       </md-content>
   </div>

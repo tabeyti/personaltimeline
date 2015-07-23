@@ -1,5 +1,12 @@
 var app = angular.module("app", ['ui.bootstrap.contextMenu', 'ngMaterial']);
 
+app.config( function($mdThemingProvider){
+    // Configure a dark theme with primary foreground yellow
+    $mdThemingProvider.theme('docs-dark', 'default')
+        .primaryPalette('yellow')
+        .dark();
+  });
+
 /*
   Shared services between app controllers
 */
@@ -64,6 +71,17 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
           nextId = element.id + 1;
         }
       });
+    })
+    .error(function(response) {
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.body))
+          .title('Server Error')
+          .content(response)
+          .ariaLabel('Alert Dialog Demo')
+          .ok('Got it!')
+          .targetEvent(ev)
+      );
     });
 
   function getNextId() { return nextId++; };
@@ -110,7 +128,6 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
   // ===========================================================================
   $scope.menuOptions = function(item) {
     // timeline background context menu
-    console.log(vm.getData());
     if (timeline.getSelection().length == 0) {
       return [
         ['Add Range', function ($itemScope) {
@@ -139,7 +156,7 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
           sharedService.broadcast(getLastId(), 'editItem', false);
         }],
         ['Delete', function ($itemScope) {
-          items.remove(timeline.getSelection()[0]);
+          itemManager.items.remove(timeline.getSelection()[0]);
           sharedService.broadcast(0, 'nullSelect', false);
         }]
       ];
@@ -153,20 +170,14 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
 app.controller("ItemInfoController", function($scope, $mdDialog, $http, sharedService, itemManager){
   var vm = this;
   $scope.editEnabled = false;
-  $scope.itemDisplay = {
-    title: '',
-    journal: ''
-  };
+  $scope.item;
 
   $scope.$on('handlePublish', function(){
     // handle event based on type
     switch (sharedService.bcEvent)
     {
       case 'nullSelect':
-        $scope.itemDisplay = {
-          title: '',
-          journal: ''
-        };
+        $scope.item = {};
         $scope.editEnabled = false;
         break;
       case 'editItem':
@@ -199,10 +210,8 @@ app.controller("ItemInfoController", function($scope, $mdDialog, $http, sharedSe
     //       };
     //     }
     //   });
-    $scope.itemDisplay.title = sharedService.item.content;
-    $scope.itemDisplay.journal = sharedService.item.journal;
+    $scope.item = sharedService.item;
     $scope.editEnabled = true;
-    console.log($scope.itemDisplay);
   };
 
 
@@ -213,7 +222,7 @@ app.controller("ItemInfoController", function($scope, $mdDialog, $http, sharedSe
       parent: angular.element(document.body),
       targetEvent: ev,
       locals: {
-        item: $scope.itemDisplay,
+        item: $scope.item,
         itemManager: itemManager
       },
     })
@@ -244,6 +253,7 @@ function DialogController($scope, $mdDialog, item, itemManager) {
     // restore old information
     if ('save' != answer) {
       $scope.item.journal = $scope.oldItem.journal;
+      $scope.item.content = $scope.oldItem.content;
     }
     else {
       console.log($scope.item);
