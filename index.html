@@ -38,18 +38,19 @@
             <h2>{{item.title}}</h2>
             <span flex></span>
             <md-button class="md-icon-button" ng-click="answer('not applicable')">
-              Close
+              X
             </md-button>
           </div>
         </md-toolbar>
         <md-dialog-content>
-          <textarea class='form-control' rows="10" cols="70" style='min-height:200px;'>{{item.journal}}</textarea>
+          <md-input-container flex>
+            <label>Journal</label>
+            <textarea ng-model="item.journal" columns="1" md-maxlength="150">{{item.journal}}</textarea>
+          </md-input-container>
         </md-dialog-content>
         <div class="md-actions" layout="row">
           <span flex></span>
-          <md-button ng-click="" class="md-primary">
-           Save
-          </md-button>
+          <md-button ng-click="answer('save')" class="md-primary">Save</md-button>
         </div>
         </form>
       </md-dialog>

@@ -14,22 +14,23 @@ app.factory('sharedService', function($rootScope){
   };
   return sharedService;
 });
+app.factory('itemManager', function($rootScope){
+  var itemManager = {};
+
+  itemManager.items = new vis.DataSet({
+    type: { start: 'ISODate', end: 'ISODate' }
+  });
+
+  return itemManager;
+});
 
 ////////////////////////////////////////////////////////////////////////////////
 // Main timeline controller
 ////////////////////////////////////////////////////////////////////////////////
-app.controller("MainController", function($scope, $http, sharedService){
+app.controller("MainController", function($scope, $http, sharedService, itemManager){
   var vm = this;
   vm.title = 'Personal Timeline';
-  var itemTitle = '';
-  var itemContent = '';
   var nextId = 1;
-
-
-  // create item structure for timeline
-  var items = new vis.DataSet({
-    type: { start: 'ISODate', end: 'ISODate' }
-  });
 
   // ===========================================================================
   // Timeline setup
@@ -47,18 +48,18 @@ app.controller("MainController", function($scope, $http, sharedService){
     },
     showCurrentTime: true
   };
-  var timeline = new vis.Timeline(container, items, options);
+  var timeline = new vis.Timeline(container, itemManager.items, options);
 
   // reteive items from server
   $http.get("http://172.248.208.18:8000/ptl/process.php?method=getTimeline")
     .success(function(response) {
       console.log(response);
-      items.clear();
-      items.add(response);
+      itemManager.items.clear();
+      itemManager.items.add(response);
       timeline.fit();
 
       // find the nextId id
-      items.forEach(function(element) {
+      itemManager.items.forEach(function(element) {
         if (nextId <= element.id) {
           nextId = element.id + 1;
         }
@@ -69,7 +70,7 @@ app.controller("MainController", function($scope, $http, sharedService){
   function getLastId() { return nextId - 1; };
 
   vm.getData = function() {
-    var data = items.get({
+    var data = itemManager.items.get({
       type: {
         start: 'ISODate',
         end: 'ISODate'
@@ -89,19 +90,18 @@ app.controller("MainController", function($scope, $http, sharedService){
       sharedService.broadcast(0, 'nullSelect', false);
     }
     else {
-      sharedService.broadcast(items.get(stuff.items[0]), 'itemSelect', false);
+      sharedService.broadcast(itemManager.items.get(stuff.items[0]), 'itemSelect', false);
     }
   });
 
   timeline.on('contextmenu', function(props) {
     timeline.setSelection(props.item);
     clickedTime = props.snappedTime;
-
     if (props.item == null) {
       sharedService.broadcast(0, 'nullSelect', false, "");
     }
     else {
-      sharedService.broadcast(items.get(props.item), 'itemSelect', false);
+      sharedService.broadcast(itemManager.items.get(props.item), 'itemSelect', false);
     }
   });
 
@@ -116,19 +116,19 @@ app.controller("MainController", function($scope, $http, sharedService){
         ['Add Range', function ($itemScope) {
           var rangeSize = (timeline.getWindow().end.getTime() - timeline.getWindow().start.getTime())/5;
           var endDate = new Date(clickedTime.getTime()+rangeSize);
-          items.add({"id": getNextId(), "content": "blank", start: clickedTime, end: endDate, type:"range", journal:""});
+          itemManager.items.add({"id": getNextId(), "content": "blank", start: clickedTime, end: endDate, type:"range", journal:""});
           timeline.setSelection(getLastId());
-          sharedService.broadcast(items.get(getLastId()), 'itemAdd', true);
+          sharedService.broadcast(itemManager.items.get(getLastId()), 'itemAdd', true);
         }],
         ['Add Box', function ($itemScope) {
-          items.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"box", journal:""});
+          itemManager.items.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"box", journal:""});
           timeline.setSelection(getLastId());
-          sharedService.broadcast(items.get(getLastId()), 'itemAdd', true);
+          sharedService.broadcast(itemManager.items.get(getLastId()), 'itemAdd', true);
         }],
         ['Add Point', function ($itemScope) {
-          items.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"point", journal:""});
+          itemManager.items.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"point", journal:""});
           timeline.setSelection(getLastId());
-          sharedService.broadcast(items.get(getLastId()), 'itemAdd', true);
+          sharedService.broadcast(itemManager.items.get(getLastId()), 'itemAdd', true);
         }]
       ];
     }
@@ -150,7 +150,7 @@ app.controller("MainController", function($scope, $http, sharedService){
 ////////////////////////////////////////////////////////////////////////////////
 // Item information/editing display controller
 ////////////////////////////////////////////////////////////////////////////////
-app.controller("ItemInfoController", function($scope, $mdDialog, $http, sharedService){
+app.controller("ItemInfoController", function($scope, $mdDialog, $http, sharedService, itemManager){
   var vm = this;
   $scope.editEnabled = false;
   $scope.itemDisplay = {
@@ -213,19 +213,26 @@ app.controller("ItemInfoController", function($scope, $mdDialog, $http, sharedSe
       parent: angular.element(document.body),
       targetEvent: ev,
       locals: {
-        item: $scope.itemDisplay
+        item: $scope.itemDisplay,
+        itemManager: itemManager
       },
     })
     .then(function(answer) {
+      if ('save' == answer)
+      {
 
+      }
     }, function() {
 
     });
   };
 });
 
-function DialogController($scope, $mdDialog, item) {
+function DialogController($scope, $mdDialog, item, itemManager) {
   $scope.item = item;
+  $scope.oldItem = {
+    journal: item.journal
+  };
 
   $scope.hide = function() {
     $mdDialog.hide();
@@ -234,6 +241,14 @@ function DialogController($scope, $mdDialog, item) {
     $mdDialog.cancel();
   };
   $scope.answer = function(answer) {
+    // restore old information
+    if ('save' != answer) {
+      $scope.item.journal = $scope.oldItem.journal;
+    }
+    else {
+      console.log($scope.item);
+      itemManager.items.update($scope.item);
+    }
     $mdDialog.hide(answer);
   };
 }
