@@ -135,17 +135,17 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
           var endDate = new Date(clickedTime.getTime()+rangeSize);
           itemManager.items.add({"id": getNextId(), "content": "blank", start: clickedTime, end: endDate, type:"range", journal:""});
           timeline.setSelection(getLastId());
-          sharedService.broadcast(itemManager.items.get(getLastId()), 'itemAdd', true);
+          sharedService.broadcast(itemManager.items.get(getLastId()), 'editItem', true);
         }],
         ['Add Box', function ($itemScope) {
           itemManager.items.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"box", journal:""});
           timeline.setSelection(getLastId());
-          sharedService.broadcast(itemManager.items.get(getLastId()), 'itemAdd', true);
+          sharedService.broadcast(itemManager.items.get(getLastId()), 'editItem', true);
         }],
         ['Add Point', function ($itemScope) {
           itemManager.items.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"point", journal:""});
           timeline.setSelection(getLastId());
-          sharedService.broadcast(itemManager.items.get(getLastId()), 'itemAdd', true);
+          sharedService.broadcast(itemManager.items.get(getLastId()), 'editItem', true);
         }]
       ];
     }
@@ -153,7 +153,7 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
     else {
       return [
         ['Edit', function ($itemScope) {
-          sharedService.broadcast(getLastId(), 'editItem', false);
+          sharedService.broadcast(itemManager.items.get(timeline.getSelection()[0]), 'editItem', false);
         }],
         ['Delete', function ($itemScope) {
           itemManager.items.remove(timeline.getSelection()[0]);
@@ -181,6 +181,7 @@ app.controller("ItemInfoController", function($scope, $mdDialog, $http, sharedSe
         $scope.editEnabled = false;
         break;
       case 'editItem':
+        LoadItemData();
         $scope.showItemEdit(this);
         break;
       default:
@@ -240,7 +241,8 @@ app.controller("ItemInfoController", function($scope, $mdDialog, $http, sharedSe
 function DialogController($scope, $mdDialog, item, itemManager) {
   $scope.item = item;
   $scope.oldItem = {
-    journal: item.journal
+    journal: item.journal,
+    content: item.content
   };
 
   $scope.hide = function() {
