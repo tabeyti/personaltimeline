@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Item information/editing display controller
 ////////////////////////////////////////////////////////////////////////////////
-app.controller("ItemDisplayController", function($scope, $mdDialog, $http, sharedService, itemManager){
+app.controller("ItemContentDisplayController", function($scope, $mdDialog, $http, sharedService, itemManager){
   var vm = this;
   $scope.editEnabled = false;
   $scope.item;
@@ -92,7 +92,7 @@ function DialogController($scope, $mdDialog, item, itemManager) {
       $scope.item.content = $scope.oldItem.content;
     }
     else {
-      itemManager.items.update($scope.item);
+      itemManager.update($scope.item);
     }
     $mdDialog.hide(answer);
   };

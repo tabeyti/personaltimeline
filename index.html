@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-animate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-aria.min.js"></script>
@@ -19,79 +21,96 @@
     <script src="js/contextMenu.js"></script>
     <script src="js/app.js"></script>
     <script src="js/timelineController.js"></script>
-    <script src="js/itemDisplayController.js"></script>
+    <script src="js/settingsController.js"></script>
+    <script src="js/itemContentDisplayController.js"></script>
 
   </head>
   <body ng-app="app">
     <md-content>
-      <md-toolbar class="md-display-1" layout layout-align="center left" style="padding-left:10px">
-        <h2>Personal Timeline</h2>
-      </md-toolbar>
-        <div ng-controller="MainController as main">
-          <div id="visualization" context-menu="menuOptions(item)"></div>
-          <md-content>
-            <section layout="row" layout-sm="column" layout-align="left center">
-              <md-button class="md-raised md-primary">Save</md-button>
-            </section>
-          </md-content>
-        </div>
-        <br>
 
-        <div ng-controller="ItemDisplayController as itemDisplay" layout-padding style="padding:10px;height: 600px;">
-        <md-content ng-show="editEnabled">
-          
-          <script type="text/ng-template" id="item.dialog.html">
-          <md-dialog  aria-label="Item Edit Dialog">
-            <form>
-            <md-toolbar layout-padding>
-              <md-input-container>
-                 <input ng-model="item.content" aria-label="Title" style="color:white">
-               </md-input-container>
-            </md-toolbar>
-            <md-dialog-content>
-              <div layout="column" layout-sm="column">
+      <div ng-controller = "SettingsController">
+        <md-toolbar class="md-display-1" layout="row" layout-align="center left" style="padding-left:10px">
+          <md-button class="md-icon-button" ng-click="toggleNav()" aria-label="Settings">
+            <i class="material-icons md-48">menu</i>
+          </md-button>
+          <h2><span>Personal Timeline</span></h2>
+        </md-toolbar>
+        <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+          <div flex="50" ng-repeat="label in items.labels">
+            <md-checkbox ng-checked="" ng-click="">
+              {{ label }}
+            </md-checkbox>
+          </div>
+        </md-sidenav>
+      </div>
 
-                <md-input-container flex>
-                  <label>Journal</label>
-                  <textarea ng-model="item.journal" columns="1" md-maxlength="150">{{item.journal}}</textarea>
-                </md-input-container>
 
-                  <label>Labels</label>
-                  <md-chips ng-model="item.labels" readonly="false"></md-chips>
 
-              </div>
-            </md-dialog-content>
-            <div class="md-actions" layout="row">
-              <span flex></span>
-              <md-button ng-click="answer('save')" class="md-primary">Save</md-button>
-              <md-button ng-click="answer('cancel')" class="md-primary">Cancel</md-button>
-            </div>
-            </form>
-          </md-dialog>
-          </script>
-
-          <md-whiteframe class="md-whiteframe-z2" layout="column" layout-margin>
-            <md-toolbar>
-              <div class="md-toolbar-tools">
-                <md-button class="md-icon-button" ng-click="showItemEdit($event)" ng-disabled="!editEnabled" aria-label="Edit">
-                  <md-icon md-svg-icon="https://upload.wikimedia.org/wikipedia/commons/7/77/Gear_icon.svg" ng-class="font.theme"></md-icon>
-                </md-button>
-                <h2><span>{{item.content}}</span></h2>
-              </div>
-            </md-toolbar>
-            <div flex flex-order="1">
-              <md-chips ng-model="item.labels" readonly="true"></md-chips>
-            </div>
-            <div flex flex-order="2">
-              <md-content layout layout-align="left center">
-                  <pre style="width: 100%;">{{item.journal || 'no description'}}</pre>
-                <!-- </a> -->
-              </md-content>
-            </div>
-          </md-whiteframe>
-
+      <div ng-controller="MainController as main">
+        <div id="visualization" context-menu="menuOptions(item)"></div>
+        <md-content>
+          <section layout="row" layout-sm="column" layout-align="left center">
+            <md-button class="md-raised md-primary">Save</md-button>
+          </section>
         </md-content>
-        </div>
+      </div>
+      <br>
+
+      <div ng-controller="ItemContentDisplayController as itemDisplay" >
+      <md-content ng-show="editEnabled">
+
+        <script type="text/ng-template" id="item.dialog.html">
+        <md-dialog  aria-label="Item Edit Dialog">
+          <form>
+          <md-toolbar layout-padding>
+            <md-input-container>
+               <input ng-model="item.content" aria-label="Title" style="color:white">
+             </md-input-container>
+          </md-toolbar>
+          <md-dialog-content>
+            <div layout="column" layout-sm="column">
+
+              <md-input-container flex>
+                <label>Journal</label>
+                <textarea ng-model="item.journal" columns="1" md-maxlength="150">{{item.journal}}</textarea>
+              </md-input-container>
+
+                <label>Labels</label>
+                <md-chips ng-model="item.labels" readonly="false"></md-chips>
+
+            </div>
+          </md-dialog-content>
+          <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button ng-click="answer('save')" class="md-primary">Save</md-button>
+            <md-button ng-click="answer('cancel')" class="md-primary">Cancel</md-button>
+          </div>
+          </form>
+        </md-dialog>
+        </script>
+
+        <md-whiteframe class="md-whiteframe-z1" layout="column" layout-margin>
+          <md-toolbar>
+            <div class="md-toolbar-tools">
+              <md-button class="md-icon-button" ng-click="showItemEdit($event)" ng-disabled="!editEnabled" aria-label="Edit">
+                <md-icon md-svg-icon="https://upload.wikimedia.org/wikipedia/commons/7/77/Gear_icon.svg" ng-class="font.theme"></md-icon>
+              </md-button>
+              <h2><span>{{item.content}}</span></h2>
+            </div>
+          </md-toolbar>
+          <div flex flex-order="1">
+            <md-chips ng-model="item.labels" readonly="true"></md-chips>
+          </div>
+          <div flex flex-order="2">
+            <md-content layout layout-align="left center">
+                <pre style="width: 100%;">{{item.journal || 'no description'}}</pre>
+              <!-- </a> -->
+            </md-content>
+          </div>
+        </md-whiteframe>
+
+      </md-content>
+      </div>
 
     </md-content>
   </body>

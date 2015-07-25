@@ -12,12 +12,27 @@ app.factory('sharedService', function($rootScope){
   };
   return sharedService;
 });
-app.factory('itemManager', function($rootScope){
-  var itemManager = {};
 
-  itemManager.items = new vis.DataSet({
+app.factory('itemManager', function($rootScope){
+  var itemManager = new vis.DataSet({
     type: { start: 'ISODate', end: 'ISODate' }
   });
+
+  itemManager.labels = {};
+
+  itemManager.addSet = function(json) {
+    this.add(json);
+    this.forEach(function(item) {
+      for (i = 0; i < item.labels.length; ++i){
+        itemManager.labels[item.labels[i]] = item.labels[i];
+      }
+    });
+  };
+
+  itemManager.hide = function(label){
+
+
+  };
 
   return itemManager;
 });
@@ -46,17 +61,17 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
     },
     showCurrentTime: true
   };
-  var timeline = new vis.Timeline(container, itemManager.items, options);
+  var timeline = new vis.Timeline(container, itemManager, options);
 
   // reteive items from server
   $http.get("http://172.248.208.18:8000/ptl/process.php?method=getTimeline")
     .success(function(response) {
-      itemManager.items.clear();
-      itemManager.items.add(response);
+      itemManager.clear();
+      itemManager.addSet(response);
       timeline.fit();
 
       // find the nextId id
-      itemManager.items.forEach(function(element) {
+      itemManager.forEach(function(element) {
         if (nextId <= element.id) {
           nextId = element.id + 1;
         }
@@ -74,11 +89,14 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
       );
     });
 
+  function populateLabels(items) {
+
+  };
   function getNextId() { return nextId++; };
   function getLastId() { return nextId - 1; };
 
   vm.getData = function() {
-    var data = itemManager.items.get({
+    var data = itemManager.get({
       type: {
         start: 'ISODate',
         end: 'ISODate'
@@ -98,18 +116,19 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
       sharedService.broadcast(0, 'nullSelect', false);
     }
     else {
-      sharedService.broadcast(itemManager.items.get(stuff.items[0]), 'itemSelect', false);
+      sharedService.broadcast(itemManager.get(stuff.items[0]), 'itemSelect', false);
     }
   });
 
   timeline.on('contextmenu', function(props) {
+    itemManager.hide("bacon");
     timeline.setSelection(props.item);
     clickedTime = props.snappedTime;
     if (props.item == null) {
       sharedService.broadcast(0, 'nullSelect', false, "");
     }
     else {
-      sharedService.broadcast(itemManager.items.get(props.item), 'itemSelect', false);
+      sharedService.broadcast(itemManager.get(props.item), 'itemSelect', false);
     }
   });
 
@@ -123,19 +142,19 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
         ['Add Range', function ($itemScope) {
           var rangeSize = (timeline.getWindow().end.getTime() - timeline.getWindow().start.getTime())/5;
           var endDate = new Date(clickedTime.getTime()+rangeSize);
-          itemManager.items.add({"id": getNextId(), "content": "blank", start: clickedTime, end: endDate, type:"range", journal:"", labels:[]});
+          itemManager.add({"id": getNextId(), "content": "blank", start: clickedTime, end: endDate, type:"range", journal:"", labels:[]});
           timeline.setSelection(getLastId());
-          sharedService.broadcast(itemManager.items.get(getLastId()), 'editItem', true);
+          sharedService.broadcast(itemManager.get(getLastId()), 'editItem', true);
         }],
         ['Add Box', function ($itemScope) {
-          itemManager.items.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"box", journal:"", labels:[]});
+          itemManager.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"box", journal:"", labels:[]});
           timeline.setSelection(getLastId());
-          sharedService.broadcast(itemManager.items.get(getLastId()), 'editItem', true);
+          sharedService.broadcast(itemManager.get(getLastId()), 'editItem', true);
         }],
         ['Add Point', function ($itemScope) {
-          itemManager.items.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"point", journal:"", labels:[]});
+          itemManager.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"point", journal:"", labels:[]});
           timeline.setSelection(getLastId());
-          sharedService.broadcast(itemManager.items.get(getLastId()), 'editItem', true);
+          sharedService.broadcast(itemManager.get(getLastId()), 'editItem', true);
         }]
       ];
     }
@@ -143,10 +162,10 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
     else {
       return [
         ['Edit', function ($itemScope) {
-          sharedService.broadcast(itemManager.items.get(timeline.getSelection()[0]), 'editItem', false);
+          sharedService.broadcast(itemManager.get(timeline.getSelection()[0]), 'editItem', false);
         }],
         ['Delete', function ($itemScope) {
-          itemManager.items.remove(timeline.getSelection()[0]);
+          itemManager.remove(timeline.getSelection()[0]);
           sharedService.broadcast(0, 'nullSelect', false);
         }]
       ];
