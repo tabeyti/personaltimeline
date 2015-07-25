@@ -1,10 +1,9 @@
 app.controller("SettingsController", function($scope, $http, $mdSidenav, $mdUtil, sharedService, itemManager) {
-
+  var sc = this;
   $scope.toggleNav = toggle('left');
-  $scope.items = itemManager;
-  
+  sc.items = itemManager;
+
   function toggle(navID) {
-    console.log('nav toggled');
     var debounceFn =  $mdUtil.debounce(function(){
       $mdSidenav(navID)
         .toggle()
@@ -15,4 +14,15 @@ app.controller("SettingsController", function($scope, $http, $mdSidenav, $mdUtil
 
     return debounceFn;
   };
+
+  sc.filterLabel = function(items) {
+    var results = [];
+
+    angular.forEach(items, function(v, k) {
+      results.push(k);
+    });
+
+    return results;
+  }
+
 });

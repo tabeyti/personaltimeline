@@ -74,10 +74,7 @@ app.controller("ItemContentDisplayController", function($scope, $mdDialog, $http
 
 app.controller('DialogController', function($scope, $mdDialog, item, itemManager) {
   $scope.item = item;
-  $scope.oldItem = {
-    journal: item.journal,
-    content: item.content
-  };
+  $scope.tempItem = itemManager.cloneItem(item);
 
   $scope.hide = function() {
     $mdDialog.hide();
@@ -86,13 +83,12 @@ app.controller('DialogController', function($scope, $mdDialog, item, itemManager
     $mdDialog.cancel();
   };
   $scope.answer = function(answer) {
-    // restore old information
-    if ('save' != answer) {
-      $scope.item.journal = $scope.oldItem.journal;
-      $scope.item.content = $scope.oldItem.content;
-    }
-    else {
-      itemManager.update($scope.item);
+    // updates item with changes
+    if ('save' == answer) {
+      $scope.item.journal = $scope.tempItem.journal;
+      $scope.item.content = $scope.tempItem.content;
+      $scope.item.labels = $scope.tempItem.labels;
+      itemManager.updateItem($scope.item);
     }
     $mdDialog.hide(answer);
   };

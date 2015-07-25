@@ -28,7 +28,7 @@
   <body ng-app="app">
     <md-content>
 
-      <div ng-controller = "SettingsController">
+      <div ng-controller = "SettingsController as sc">
         <md-toolbar class="md-display-1" layout="row" layout-align="center left" style="padding-left:10px">
           <md-button class="md-icon-button" ng-click="toggleNav()" aria-label="Settings">
             <i class="material-icons md-48">menu</i>
@@ -36,7 +36,8 @@
           <h2><span>Personal Timeline</span></h2>
         </md-toolbar>
         <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
-          <div flex="50" ng-repeat="label in items.labels">
+          <md-toolbar>Labels</md-toolbar>
+          <div flex="50" ng-repeat="label in sc.filterLabel(sc.items.labels)">
             <md-checkbox ng-checked="" ng-click="">
               {{ label }}
             </md-checkbox>
@@ -64,7 +65,7 @@
           <form>
           <md-toolbar layout-padding>
             <md-input-container>
-               <input ng-model="item.content" aria-label="Title" style="color:white">
+               <input ng-model="tempItem.content" aria-label="Title" style="color:white">
              </md-input-container>
           </md-toolbar>
           <md-dialog-content>
@@ -72,11 +73,11 @@
 
               <md-input-container flex>
                 <label>Journal</label>
-                <textarea ng-model="item.journal" columns="1" md-maxlength="150">{{item.journal}}</textarea>
+                <textarea ng-model="tempItem.journal" columns="1" md-maxlength="150">{{item.journal}}</textarea>
               </md-input-container>
 
                 <label>Labels</label>
-                <md-chips ng-model="item.labels" readonly="false"></md-chips>
+                <md-chips ng-model="tempItem.labels" readonly="false"></md-chips>
 
             </div>
           </md-dialog-content>

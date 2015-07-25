@@ -7,39 +7,68 @@ app.config( function($mdThemingProvider){
         .dark();
   });
 
-  /*
-    Shared services between app controllers
-  */
-  app.factory('sharedService', function($rootScope){
-    var sharedService = {};
+/*
+  Shared services between app controllers
+*/
+app.factory('sharedService', function($rootScope){
+  var sharedService = {};
 
-    sharedService.broadcast = function(item, bcEvent, isNewItem) {
-      this.item = item;
-      this.bcEvent = bcEvent;
-      this.isNewItem = isNewItem;
-      $rootScope.$broadcast('handlePublish');
-    };
-    return sharedService;
+  sharedService.broadcast = function(item, bcEvent, isNewItem) {
+    this.item = item;
+    this.bcEvent = bcEvent;
+    this.isNewItem = isNewItem;
+    $rootScope.$broadcast('handlePublish');
+  };
+  return sharedService;
+});
+
+app.factory('itemManager', function($rootScope){
+  var itemManager = new vis.DataSet({
+    type: { start: 'ISODate', end: 'ISODate' }
   });
 
-  app.factory('itemManager', function($rootScope){
-    var itemManager = new vis.DataSet({
-      type: { start: 'ISODate', end: 'ISODate' }
-    });
+  itemManager.labels = {};
 
-    itemManager.labels = new Array();
+  itemManager.addSet = function(json) {
+    this.add(json);
+    itemManager.updateLabels();
+  };
 
-    itemManager.addSet = function(json) {
-      this.add(json);
-      this.forEach(function(item) {
-        for (i = 0; i < item.labels.length; ++i){
-          itemManager.labels[item.labels[i]] = item.labels[i];
+  itemManager.updateLabels = function() {
+    itemManager.labels = {};
+    this.forEach(function(item) {
+      for (i = 0; i < item.labels.length; ++i) {
+        if (undefined == itemManager.labels[item.labels[i]])
+        {
+          itemManager.labels[item.labels[i]] = [];
         }
-      });
-    };
+        itemManager.labels[item.labels[i]].push(item.id);
+      }
+    });
+    console.log(itemManager.labels);
+  };
 
-    itemManager.hide = function(label){
-    };
+  itemManager.updateItem = function(item) {
+    itemManager.update(item);
+    itemManager.updateLabels();
+  }
 
-    return itemManager;
-  });
+  itemManager.hide = function(label){
+  };
+
+  itemManager.cloneItem = function(item) {
+    var tempItem = {
+      journal: item.journal,
+      content: item.content,
+      labels: []
+    };
+    angular.forEach(item.labels, function (label) {
+      tempItem.labels.push(label);
+    });
+    return tempItem;
+  };
+
+  return itemManager;
+});
+
+// app.module('filters', )
