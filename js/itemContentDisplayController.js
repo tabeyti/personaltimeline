@@ -52,7 +52,7 @@ app.controller("ItemContentDisplayController", function($scope, $mdDialog, $http
 
   $scope.showItemEdit = function(ev) {
     $mdDialog.show({
-      controller: DialogController,
+      controller: 'DialogController',
       templateUrl: 'item.dialog.html',
       parent: angular.element(document.body),
       targetEvent: ev,
@@ -72,7 +72,7 @@ app.controller("ItemContentDisplayController", function($scope, $mdDialog, $http
   };
 });
 
-function DialogController($scope, $mdDialog, item, itemManager) {
+app.controller('DialogController', function($scope, $mdDialog, item, itemManager) {
   $scope.item = item;
   $scope.oldItem = {
     journal: item.journal,
@@ -96,4 +96,4 @@ function DialogController($scope, $mdDialog, item, itemManager) {
     }
     $mdDialog.hide(answer);
   };
-}
+});
