@@ -82,7 +82,6 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
   });
 
   timeline.on('contextmenu', function(props) {
-    itemManager.filterDisplayedItems('eggs', false);
     timeline.setSelection(props.item);
     clickedTime = props.snappedTime;
     if (props.item == null) {

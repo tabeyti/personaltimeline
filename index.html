@@ -29,14 +29,18 @@
     <md-content>
 
       <div ng-controller = "SettingsController as sc">
-        <md-toolbar class="md-display-1" layout="row" layout-align="center left" style="padding-left:10px">
+        <md-toolbar layout="row" layout-align="center left" style="padding-left:10px">
           <md-button class="md-icon-button" ng-click="sc.toggleNav()" aria-label="Settings">
             <i class="material-icons md-48">menu</i>
           </md-button>
           <h2><span>Personal Timeline</span></h2>
         </md-toolbar>
         <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
-          <md-toolbar>Labels</md-toolbar>
+          <md-toolbar>
+            <div class="md-toolbar-tools">
+              Labels
+            </div>
+          </md-toolbar>
           <md-radio-group ng-model="sc.selectedLabel" class="md-primary">
             <md-radio-button ng-repeat="label in sc.labels" ng-value="label">{{label}}</md-radio-button>
           </md-radio-group>

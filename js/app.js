@@ -61,6 +61,7 @@ app.factory('itemManager', function($rootScope){
 
   itemManager.remove = function(item) {
     itemManager.items.remove(item);
+    itemManager.updateLabels();
   }
 
   itemManager.add = function(item) {
@@ -69,7 +70,7 @@ app.factory('itemManager', function($rootScope){
 
   itemManager.updateItem = function(item) {
     itemManager.items.update(item);
-    itemManager.items.updateLabels();
+    itemManager.updateLabels();
   }
 
   itemManager.filterDisplayedItems = function(filterLabel){
