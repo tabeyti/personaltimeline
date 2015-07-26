@@ -37,11 +37,9 @@
         </md-toolbar>
         <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
           <md-toolbar>Labels</md-toolbar>
-          <div flex="50" ng-repeat="label in sc.labels">
-            <md-checkbox ng-click="sc.filterTimeLine(label)">
-              {{ label }}
-            </md-checkbox>
-          </div>
+          <md-radio-group ng-model="sc.selectedLabel" class="md-primary">
+            <md-radio-button ng-repeat="label in sc.labels" ng-value="label">{{label}}</md-radio-button>
+          </md-radio-group>
         </md-sidenav>
       </div>
 

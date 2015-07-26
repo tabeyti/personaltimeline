@@ -72,16 +72,26 @@ app.factory('itemManager', function($rootScope){
     itemManager.items.updateLabels();
   }
 
-  itemManager.filterDisplayedItems = function(filterLabel, display){
-    itemManager.items.forEach(function(item) {
-      angular.forEach(item.labels, function(label) {
-        if (label == filterLabel) {
-
-          (display) ? item.style = "display:inline" : item.style = "display:none";
-          itemManager.items.update(item);
-        }
+  itemManager.filterDisplayedItems = function(filterLabel){
+    // show all items
+    if ('All' == filterLabel) {
+      itemManager.items.forEach(function(item) {
+        item.style = "display:inline";
+        itemManager.items.update(item);
       });
-    });
+    }
+    else { // only show items with the label passed
+      itemManager.items.forEach(function(item) {
+        var found = false;
+        angular.forEach(item.labels, function(label) {
+          if (label == filterLabel) {
+            found = true;
+          }
+        });
+        (found) ? item.style = "display:inline" : item.style = "display:none";
+        itemManager.items.update(item);
+      });
+    }
   };
 
   itemManager.getLabelNames = function() {
