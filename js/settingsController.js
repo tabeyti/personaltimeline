@@ -1,6 +1,6 @@
 app.controller("SettingsController", function($scope, $http, $mdSidenav, $mdUtil, sharedService, itemManager) {
   var sc = this;
-  sc.labels = ['All'];
+  sc.labels = [];
   sc.labels = sc.labels.concat(itemManager.getLabelNames());
   sc.selected = [];
 
@@ -16,7 +16,7 @@ app.controller("SettingsController", function($scope, $http, $mdSidenav, $mdUtil
   };
 
   sc.refreshLabels = function() {
-    sc.labels = ['All'];
+    sc.labels = [];
     sc.labels = sc.labels.concat(itemManager.getLabelNames());
     return sc.labels;
   }

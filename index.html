@@ -99,6 +99,10 @@
               <h2><span>{{item.content}}</span></h2>
             </div>
           </md-toolbar>
+          <div layout-margin layout="row">
+            <div flex>Start: {{item.start}}</div>
+            <div ng-if=item.type=='range'> End: {{item.end}}</div>
+          </div>
           <div flex flex-order="1">
             <md-chips ng-model="item.labels" readonly="true"></md-chips>
           </div>

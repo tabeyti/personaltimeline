@@ -32,6 +32,7 @@ app.factory('itemManager', function($rootScope){
     type: { start: 'ISODate', end: 'ISODate' }
   });
   itemManager.labels = {};
+  itemManager.selectedLabel = 'All';
 
   itemManager.addSet = function(json) {
     itemManager.items.add(json);
@@ -74,7 +75,7 @@ app.factory('itemManager', function($rootScope){
   }
 
   itemManager.filterDisplayedItems = function(filterLabel){
-    // show all items
+    itemManager.selectedLabel = filterLabel;
     if ('All' == filterLabel) {
       itemManager.items.forEach(function(item) {
         item.style = "display:inline";
@@ -97,7 +98,7 @@ app.factory('itemManager', function($rootScope){
 
   itemManager.getLabelNames = function() {
     itemManager.updateLabels();
-    var results = [];
+    var results = ['All'];
     angular.forEach(itemManager.labels, function(v, k) {
       results.push(k);
     });
