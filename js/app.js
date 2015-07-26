@@ -22,21 +22,25 @@ app.factory('sharedService', function($rootScope){
   return sharedService;
 });
 
+////////////////////////////////////////////////////////////////////////////////
+// Handles the management of item sets: data views, groups, adding/chaning/deleting
+// and all that jazz.
+////////////////////////////////////////////////////////////////////////////////
 app.factory('itemManager', function($rootScope){
-  var itemManager = new vis.DataSet({
+  var itemManager = this;
+  itemManager.items = new vis.DataSet({
     type: { start: 'ISODate', end: 'ISODate' }
   });
-
   itemManager.labels = {};
 
   itemManager.addSet = function(json) {
-    this.add(json);
+    itemManager.items.add(json);
     itemManager.updateLabels();
   };
 
   itemManager.updateLabels = function() {
     itemManager.labels = {};
-    this.forEach(function(item) {
+    itemManager.items.forEach(function(item) {
       for (i = 0; i < item.labels.length; ++i) {
         if (undefined == itemManager.labels[item.labels[i]])
         {
@@ -45,16 +49,50 @@ app.factory('itemManager', function($rootScope){
         itemManager.labels[item.labels[i]].push(item.id);
       }
     });
-    console.log(itemManager.labels);
   };
 
-  itemManager.updateItem = function(item) {
-    itemManager.update(item);
-    itemManager.updateLabels();
+  itemManager.clear = function() {
+    itemManager.items.clear();
   }
 
-  itemManager.hide = function(label){
+  itemManager.get = function(item) {
+    return itemManager.items.get(item);
+  }
+
+  itemManager.remove = function(item) {
+    itemManager.items.remove(item);
+  }
+
+  itemManager.add = function(item) {
+    itemManager.items.add(item);
+  }
+
+  itemManager.updateItem = function(item) {
+    itemManager.items.update(item);
+    itemManager.items.updateLabels();
+  }
+
+  itemManager.filterDisplayedItems = function(filterLabel, display){
+    itemManager.items.forEach(function(item) {
+      angular.forEach(item.labels, function(label) {
+        if (label == filterLabel) {
+
+          (display) ? item.style = "display:inline" : item.style = "display:none";
+          itemManager.items.update(item);
+        }
+      });
+    });
   };
+
+  itemManager.getLabelNames = function() {
+    itemManager.updateLabels();
+    var results = [];
+    angular.forEach(itemManager.labels, function(v, k) {
+      results.push(k);
+    });
+    console.log(results);
+    return results;
+  }
 
   itemManager.cloneItem = function(item) {
     var tempItem = {

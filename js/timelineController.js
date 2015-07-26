@@ -22,7 +22,7 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
     },
     showCurrentTime: true
   };
-  var timeline = new vis.Timeline(container, itemManager, options);
+  var timeline = new vis.Timeline(container, itemManager.items, options);
 
   // reteive items from server
   $http.get("http://172.248.208.18:8000/ptl/process.php?method=getTimeline")
@@ -32,7 +32,7 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
       timeline.fit();
 
       // find the nextId id
-      itemManager.forEach(function(element) {
+      itemManager.items.forEach(function(element) {
         if (nextId <= element.id) {
           nextId = element.id + 1;
         }
@@ -82,7 +82,7 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
   });
 
   timeline.on('contextmenu', function(props) {
-    itemManager.hide("bacon");
+    itemManager.filterDisplayedItems('eggs', false);
     timeline.setSelection(props.item);
     clickedTime = props.snappedTime;
     if (props.item == null) {
