@@ -1,0 +1,93 @@
+.temp  {
+  background-color: gray;
+}
+
+/* RED ITEM STYLE */
+.vis-item.red {
+  color: white;
+  background-color: rgb(255, 109, 63);
+}
+
+.vis-item.vis-dot.red {
+  border-color: rgb(255, 109, 63);
+}
+
+.vis-item.vis-line.red {
+  border-color: rgb(255, 109, 63);
+}
+
+/* ORANGE ITEM STYLE */
+.vis-item.orange {
+  background-color: rgb(255, 155, 0);
+}
+
+.vis-item.vis-line.orange {
+  border-color: rgb(255, 155, 0);
+}
+
+.vis-item.vis-dot.orange {
+  border-color: rgb(255, 155, 0);
+}
+
+/* YELLOW ITEM STYLE */
+.vis-item.yellow {
+  background-color: rgb(255, 218, 0);
+}
+
+.vis-item.vis-line.yellow {
+  border-color: rgb(255, 218, 0);
+}
+
+.vis-item.vis-dot.yellow {
+  border-color: rgb(255, 218, 0);
+}
+
+/* BLUE ITEM STYLE */
+.vis-item.blue {
+  background-color: rgb(63, 195, 255);
+}
+
+.vis-item.vis-dot.blue {
+  border-color: rgb(63, 195, 255);
+}
+
+.vis-item.vis-line.blue {
+  border-color: rgb(63, 195, 255);
+}
+
+/* TEAL ITEM STYLE */
+.vis-item.teal {
+  background-color: rgb(41, 233, 185);
+}
+
+.vis-item.vis-dot.teal {
+  border-color: rgb(41, 233, 185);
+}
+
+.vis-item.vis-line.teal {
+  border-color: rgb(41, 233, 185);
+}
+
+/* GREEN  ITEM STYLE */
+.vis-item.green {
+  background-color: rgb(149, 214, 65);
+}
+
+.vis-item.vis-dot.green {
+  border-color: rgb(149, 214, 65);
+}
+
+.vis-item.vis-line.green {
+  border-color: rgb(149, 214, 65);
+}
+
+/* DEFAULTS */
+.vis-item.default {
+}
+
+.vis-item.vis-selected {
+  background-color: rgb(255,247,143);
+  border-color: rgb(255,194,0);
+  color: black;
+  box-shadow: 0 0 10px rgb(255,194,0);
+}

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Main timeline controller
 ////////////////////////////////////////////////////////////////////////////////
-app.controller("MainController", function($scope, $http, sharedService, itemManager){
+app.controller('MainController', function($scope, $http, sharedService, itemManager){
   var vm = this;
   vm.title = 'Personal Timeline';
   var nextId = 1;
@@ -25,7 +25,7 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
   var timeline = new vis.Timeline(container, itemManager.items, options);
 
   // reteive items from server
-  $http.get("http://172.248.208.18:8000/ptl/process.php?method=getTimeline")
+  $http.get('http://172.248.208.18:8000/ptl/process.php?method=getTimeline')
     .success(function(response) {
       itemManager.clear();
       itemManager.addSet(response);
@@ -85,7 +85,7 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
     timeline.setSelection(props.item);
     clickedTime = props.snappedTime;
     if (props.item == null) {
-      sharedService.broadcast(0, 'nullSelect', false, "");
+      sharedService.broadcast(0, 'nullSelect', false, '');
     }
     else {
       sharedService.broadcast(itemManager.get(props.item), 'itemSelect', false);
@@ -102,17 +102,17 @@ app.controller("MainController", function($scope, $http, sharedService, itemMana
         ['Add Range', function ($itemScope) {
           var rangeSize = (timeline.getWindow().end.getTime() - timeline.getWindow().start.getTime())/5;
           var endDate = new Date(clickedTime.getTime()+rangeSize);
-          itemManager.add({"id": getNextId(), "content": "blank", start: clickedTime, end: endDate, type:"range", journal:"", labels:[]});
+          itemManager.addBlankItem('range', getNextId(), [], clickedTime, endDate);
           timeline.setSelection(getLastId());
           sharedService.broadcast(itemManager.get(getLastId()), 'editItem', true);
         }],
         ['Add Box', function ($itemScope) {
-          itemManager.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"box", journal:"", labels:[]});
+          itemManager.addBlankItem('box', getNextId(), [], clickedTime);
           timeline.setSelection(getLastId());
           sharedService.broadcast(itemManager.get(getLastId()), 'editItem', true);
         }],
         ['Add Point', function ($itemScope) {
-          itemManager.add({"id": getNextId(), "content": "blank", start: clickedTime, type:"point", journal:"", labels:[]});
+          itemManager.addBlankItem('point', getNextId(), [], clickedTime);
           timeline.setSelection(getLastId());
           sharedService.broadcast(itemManager.get(getLastId()), 'editItem', true);
         }]

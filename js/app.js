@@ -69,6 +69,19 @@ app.factory('itemManager', function($rootScope){
     itemManager.items.add(item);
   }
 
+  itemManager.addBlankItem = function(type, id, labels, start, end) {
+    switch (type)
+    {
+      case 'point':
+      case 'box':
+        itemManager.add({'id':id, 'content': 'blank', 'start': start, 'type':type, 'journal':'', 'labels':labels, className:'red'});
+        break;
+      case 'range':
+        itemManager.add({'id':id, 'content': 'blank', 'start': start, 'end':end, 'type':type, 'journal':'', 'labels':labels, className:'default'});
+        break;
+    }
+  }
+
   itemManager.updateItem = function(item) {
     itemManager.items.update(item);
     itemManager.updateLabels();
@@ -120,5 +133,3 @@ app.factory('itemManager', function($rootScope){
 
   return itemManager;
 });
-
-// app.module('filters', )
