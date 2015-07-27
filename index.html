@@ -85,11 +85,12 @@
                 <md-menu md-offset="0 -7">
 
                   <md-button aria-label="Open Color Picker" class="md-icon-button" ng-click="$mdOpenMenu()">
-                    <i class="material-icons">format_color_fill</i>
+                    <i md-menu-origin class="material-icons">format_color_fill</i>
                   </md-button>
                   <md-menu-content width="3">
                     <md-menu-item ng-repeat="color in cp.colorClasses">
-                      <md-button ng-click="" ng-class="'vis-item ' + color" md-menu-align-target="">
+                      <md-button ng-click="" ng-class="color" md-menu-align-target="">
+                        {{color}}
                       </md-button>
                     </md-menu-item>
                   </md-menu-content>
