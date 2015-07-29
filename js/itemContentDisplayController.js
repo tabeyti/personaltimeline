@@ -88,8 +88,18 @@ app.controller('DialogController', function($scope, $mdDialog, item, itemManager
       $scope.item.journal = $scope.tempItem.journal;
       $scope.item.content = $scope.tempItem.content;
       $scope.item.labels = $scope.tempItem.labels;
+      $scope.item.className = $scope.tempItem.className;
       itemManager.updateItem($scope.item);
     }
     $mdDialog.hide(answer);
+  };
+
+  $scope.colorClasses = [
+    "red","orange","yellow","green","teal","blue"
+  ];
+
+  $scope.announceSelection = function(index) {
+    console.log('something');
+    $scope.tempItem.className = $scope.colorClasses[index];
   };
 });

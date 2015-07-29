@@ -123,7 +123,9 @@ app.factory('itemManager', function($rootScope){
     var tempItem = {
       journal: item.journal,
       content: item.content,
-      labels: []
+      labels: [],
+      className:item.className,
+      style:item.style
     };
     angular.forEach(item.labels, function (label) {
       tempItem.labels.push(label);

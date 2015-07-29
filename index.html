@@ -77,20 +77,22 @@
                 <label>Journal</label>
                 <textarea ng-model="tempItem.journal" columns="1" md-maxlength="150">{{item.journal}}</textarea>
               </md-input-container>
-
+              <br>
               <label>Labels</label>
               <md-chips ng-model="tempItem.labels" readonly="false"></md-chips>
-
-              <div class="menu-demo-container" ng-controller="ColorPickerController as cp" layout-align="left center" layout="column">
+              <br>
+              <div class="menu-demo-container"layout-align="left center" layout="column">
                 <md-menu md-offset="0 -7">
-
-                  <md-button aria-label="Open Color Picker" class="md-icon-button" ng-click="$mdOpenMenu()">
-                    <i md-menu-origin class="material-icons">format_color_fill</i>
-                  </md-button>
+                  <div layout="row" layout-align="left center">
+                    <md-button aria-label="Open Color Picker" class="md-icon-button" ng-click="$mdOpenMenu()">
+                      <i md-menu-origin class="material-icons">format_color_fill</i>
+                    </md-button>
+                    <div ng-class="tempItem.className" style="width:100%;border-radius:50px"></div>
+                  </div>
                   <md-menu-content width="3">
-                    <md-menu-item ng-repeat="color in cp.colorClasses">
-                      <md-button ng-click="" ng-class="color" md-menu-align-target="">
-                        {{color}}
+                    <md-menu-item ng-repeat="color in colorClasses">
+                      <md-button ng-class="color" ng-click="announceSelection($index)">
+                        <span md-menu-align-target>{{color}}</span>
                       </md-button>
                     </md-menu-item>
                   </md-menu-content>
