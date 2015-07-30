@@ -5,6 +5,7 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
   var vm = this;
   vm.title = 'Personal Timeline';
   var nextId = 1;
+  vm.derp = '';
 
   // ===========================================================================
   // Timeline setup
@@ -90,6 +91,13 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
     else {
       sharedService.broadcast(itemManager.get(props.item), 'itemSelect', false);
     }
+  });
+
+  timeline.on('timechange', function (event) {
+    console.log("hi");
+    console.log(event);
+    // var item = itemManager.get();
+
   });
 
   // ===========================================================================

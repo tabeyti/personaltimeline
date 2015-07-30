@@ -1,3 +1,5 @@
+<!-- https://www.google.com/design/icons/ -->
+
 <!doctype html>
 <html lang="" >
   <head>
@@ -18,6 +20,7 @@
     <script src="lib/vis/vis.js"></script>
   	<link href="lib/vis/vis.css" rel="stylesheet" type="text/css" />
     <link href="css/item.css" rel="stylesheet" type="text/css" />
+    <link href="css/main.css" rel="stylesheet" type="text/css" />
 
     <script src="js/contextMenu.js"></script>
     <script src="js/app.js"></script>
@@ -31,11 +34,13 @@
     <md-content>
 
       <div ng-controller = "SettingsController as sc">
-        <md-toolbar layout="row" layout-align="center left" style="padding-left:10px">
-          <md-button class="md-icon-button" ng-click="sc.toggleNav()" aria-label="Settings">
-            <i class="material-icons md-48">menu</i>
+        <md-toolbar>
+        <div class="md-toolbar-tools" layout="row" layout-align="center left" style="padding-left:10px">
+          <md-button class="md-icon-button" ng-click="sc.toggleNav()" aria-label="Settings" >
+            <i class="material-icons md-24" ng-class="font.theme" style="vertical-align: middle">menu</i>
           </md-button>
           <h2><span>Personal Timeline</span></h2>
+        </div>
         </md-toolbar>
         <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
           <md-toolbar>
@@ -54,6 +59,7 @@
         <md-content>
           <section layout="row" layout-sm="column" layout-align="left center">
             <md-button class="md-raised md-primary">Save</md-button>
+            {{main.derp}}
           </section>
         </md-content>
       </div>
@@ -85,7 +91,7 @@
                 <md-menu md-offset="0 -7">
                   <div layout="row" layout-align="left center">
                     <md-button aria-label="Open Color Picker" class="md-icon-button" ng-click="$mdOpenMenu()">
-                      <i md-menu-origin class="material-icons">format_color_fill</i>
+                      <i md-menu-origin class="material-icons md-36">format_color_fill</i>
                     </md-button>
                     <div ng-class="tempItem.className" style="width:100%;border-radius:50px"></div>
                   </div>
