@@ -123,6 +123,7 @@ app.factory('itemManager', function($rootScope){
     var tempItem = {
       journal: item.journal,
       content: item.content,
+      type: item.type,
       labels: [],
       className:item.className,
       style:item.style

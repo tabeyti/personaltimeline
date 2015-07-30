@@ -99,7 +99,14 @@ app.controller('DialogController', function($scope, $mdDialog, item, itemManager
   ];
 
   $scope.announceSelection = function(index) {
-    console.log('something');
-    $scope.tempItem.className = $scope.colorClasses[index];
+    // console.log($scope.colorClasses[index]);
+    // console.log($scope.tempItem.type);
+    // if ($scope.colorClasses[index] == "red" && $scope.tempItem.type == "point") {
+    //   console.log('custom!');
+    //   $scope.tempItem.className = "point-red";
+    // }
+    // else {
+      $scope.tempItem.className = $scope.colorClasses[index];
+    // }
   };
 });

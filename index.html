@@ -26,20 +26,19 @@
     <script src="js/app.js"></script>
     <script src="js/timelineController.js"></script>
     <script src="js/settingsController.js"></script>
-    <script src="js/colorPickerController.js"></script>
     <script src="js/itemContentDisplayController.js"></script>
 
   </head>
   <body ng-app="app">
       <div ng-controller = "SettingsController as sc">
-        <md-toolbar>
-        <div class="md-toolbar-tools" layout="row" layout-align="center left" style="padding-left:10px">
+
+        <div class="md-toolbar-tools" layout="row" layout-align="center left" style="padding-left:10px;height:50px">
           <md-button class="md-icon-button" ng-click="sc.toggleNav()" aria-label="Settings" >
             <i class="material-icons md-24" ng-class="font.theme" style="vertical-align: middle">menu</i>
           </md-button>
-          <h2><span>Personal Timeline</span></h2>
+          <h3><span>Personal Timeline</span></h3>
         </div>
-        </md-toolbar>
+
         <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
           <md-toolbar>
             <div class="md-toolbar-tools">

@@ -1,7 +1,6 @@
 /* CSS FOR COLOR PICKER */
 .red {
-  color: white;
-  background-color: rgb(255, 109, 63);
+  background-color: rgb(240,128,128);
 }
 .orange {
   background-color: rgb(255, 155, 0);
@@ -29,11 +28,11 @@
 }
 
 .vis-item.vis-dot.red {
-  border-color: rgb(255, 109, 63);
+  border-color: rgb(240,128,128)
 }
 
 .vis-item.vis-line.red {
-  border-color: rgb(255, 109, 63);
+  border-color: rgb(240,128,128);
 }
 
 /* ORANGE ITEM STYLE */
