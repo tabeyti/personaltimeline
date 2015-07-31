@@ -91,7 +91,7 @@ app.factory('itemManager', function($rootScope){
     itemManager.selectedLabel = filterLabel;
     if ('All' == filterLabel) {
       itemManager.items.forEach(function(item) {
-        item.style = "display:inline";
+        item.className = item.storedClassName;
         itemManager.items.update(item);
       });
     }
@@ -103,7 +103,7 @@ app.factory('itemManager', function($rootScope){
             found = true;
           }
         });
-        (found) ? item.style = "display:inline" : item.style = "display:none";
+        (found) ? item.className = item.storedClassName : item.className = "hidden";
         itemManager.items.update(item);
       });
     }

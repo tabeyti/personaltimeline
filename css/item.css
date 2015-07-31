@@ -100,6 +100,19 @@
   border-color: rgb(149, 214, 65);
 }
 
+/* HIDDEN ITEM STYLE */
+.vis-item.hidden {
+  display:none;
+}
+
+.vis-item.vis-line.hidden {
+  display:none;
+}
+
+.vis-item.vis-dot.hidden {
+  display:none;
+}
+
 /* DEFAULTS */
 .vis-item.default {
 }
