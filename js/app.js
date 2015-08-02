@@ -134,5 +134,10 @@ app.factory('itemManager', function($rootScope){
     return tempItem;
   };
 
+  itemManager.getData = function() {
+    itemManager.filterDisplayedItems('All');
+    return itemManager.items.get();
+  };
+
   return itemManager;
 });

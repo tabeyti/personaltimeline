@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Main timeline controller
 ////////////////////////////////////////////////////////////////////////////////
-app.controller('MainController', function($scope, $http, sharedService, itemManager){
+app.controller('MainController', function($scope, $http, sharedService, itemManager, $mdDialog, $mdToast){
   var vm = this;
   vm.title = 'Personal Timeline';
   var nextId = 1;
@@ -139,4 +139,43 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
       ];
     }
   };
+
+  $scope.toastPosition = {
+    bottom: false,
+    top: true,
+    left: false,
+    right: true
+  };
+  $scope.getToastPosition = function() {
+    return Object.keys($scope.toastPosition)
+      .filter(function(pos) { return $scope.toastPosition[pos]; })
+      .join(' ');
+  };
+
+  vm.onSave = function(event) {
+    var confirm = $mdDialog.confirm()
+      .parent(angular.element(document.body))
+      .title('Do you want to save the changes?')
+      .ariaLabel('Save Dialog')
+      .ok('Save')
+      .cancel('Cancel')
+      .targetEvent(event);
+    $mdDialog.show(confirm).then(function() {
+      $http.post('http://172.248.208.18:8000/ptl/process.php', itemManager.getData())
+        .then(function(response) {
+          $mdToast.show(
+            $mdToast.simple()
+              .content('Data Saved!')
+              .position($scope.getToastPosition())
+              .hideDelay(3000)
+            );
+        });
+
+    }, function() {
+      // cancel code in here
+    });
+  }
+
+
+
 });
