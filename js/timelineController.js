@@ -6,13 +6,27 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
   vm.title = 'Personal Timeline';
   var nextId = 1;
   vm.derp = '';
+  vm.periodSelected = {};
+  vm.timelineMaxHeight = '300px';
+  vm.periods = itemManager.periods;
+
+  $scope.$watchCollection('itemManager.periods', function(newVal, oldVal) {
+    vm.periods = itemManager.periods;
+    console.log('update!');
+    console.log(itemManager.periods);
+  },
+  true);
 
   // ===========================================================================
   // Timeline setup
   // ===========================================================================
-  var container = document.getElementById('visualization');
+  var container = document.getElementById('timelineBar');
+  // var subContainer = document.createElement('div');
+  // container.appendChild(subContainer);
+
   var options = {
-    height: '300px',
+    height: vm.timelineMaxHeight,
+    maxHeight: vm.timelineMaxHeight,
     multiselect: false,
     // allow manipulation of items
     editable: {
@@ -21,7 +35,7 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
       updateTime: true,
       updateGroup: true
     },
-    showCurrentTime: true
+    showCurrentTime: true,
   };
   var timeline = new vis.Timeline(container, itemManager.items, options);
 
@@ -73,12 +87,31 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
 
   // register item select listener, so when an item is clicked, content
   // is displayed above the timeline
-  timeline.on('select', function(stuff) {
-    if (stuff.items.length == 0) {
+  timeline.on('select', function(ev) {
+    if (ev.items.length == 0) {
       sharedService.broadcast(0, 'nullSelect', false);
     }
     else {
-      sharedService.broadcast(itemManager.get(stuff.items[0]), 'itemSelect', false);
+      sharedService.broadcast(itemManager.get(ev.items[0]), 'itemSelect', false);
+    }
+  });
+
+  timeline.on('click', function(ev) {
+    if (ev.what == 'background') {
+      var visibleItemIds = timeline.getVisibleItems();
+      // locate the period clicked by comparing the clicked-time location
+      // to the locations of each period item visible
+      angular.forEach(visibleItemIds, function(itemId) {
+        var item = itemManager.get(itemId);
+        var startTime = new Date(item.start);
+        var endTime = new Date(item.end);
+        if (item.type == 'background' && startTime <= ev.time && endTime >= ev.time.getTime()) {
+          timeline.setSelection(item.id);
+          vm.periodSelected = item;
+          sharedService.broadcast(item, 'itemSelect', false);
+        }
+
+      });
     }
   });
 
@@ -97,8 +130,11 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
     console.log("hi");
     console.log(event);
     // var item = itemManager.get();
-
   });
+
+  vm.periodClick = function(period, ev) {
+    sharedService.broadcast(period, 'itemSelect', false);
+  };
 
   // ===========================================================================
   // Right Click Context Menu
@@ -121,6 +157,13 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
         }],
         ['Add Point', function ($itemScope) {
           itemManager.addBlankItem('point', getNextId(), [], clickedTime);
+          timeline.setSelection(getLastId());
+          sharedService.broadcast(itemManager.get(getLastId()), 'editItem', true);
+        }],
+        ['Add Period', function ($itemScope) {
+          var rangeSize = (timeline.getWindow().end.getTime() - timeline.getWindow().start.getTime())/5;
+          var endDate = new Date(clickedTime.getTime()+rangeSize);
+          itemManager.addBlankItem('period', getNextId(), [], clickedTime, endDate);
           timeline.setSelection(getLastId());
           sharedService.broadcast(itemManager.get(getLastId()), 'editItem', true);
         }]

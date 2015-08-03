@@ -284,3 +284,10 @@ textarea {
     margin: 16px;
     box-sizing: border-box;
 }
+
+.container {
+  display: flex;
+  direction: column;
+  flex-wrap: wrap;
+  width: 100px;
+}

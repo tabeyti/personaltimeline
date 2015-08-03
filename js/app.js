@@ -32,11 +32,13 @@ app.factory('itemManager', function($rootScope){
     type: { start: 'ISODate', end: 'ISODate' }
   });
   itemManager.labels = {};
+  itemManager.periods = [];
   itemManager.selectedLabel = 'All';
 
   itemManager.addSet = function(json) {
     itemManager.items.add(json);
     itemManager.updateLabels();
+    itemManager.updatePeriods();
   };
 
   itemManager.updateLabels = function() {
@@ -49,6 +51,15 @@ app.factory('itemManager', function($rootScope){
         }
         itemManager.labels[item.labels[i]].push(item.id);
       }
+    });
+  };
+
+  itemManager.updatePeriods = function() {
+    itemManager.periods.length = 0;
+    itemManager.items.forEach(function(item) {
+      if (item.type == 'background') {
+         itemManager.periods.push(item);
+       }
     });
   };
 
@@ -74,11 +85,15 @@ app.factory('itemManager', function($rootScope){
     {
       case 'point':
       case 'box':
-        itemManager.add({'id':id, 'content': 'blank', 'start': start, 'type':type, 'journal':'', 'labels':labels, className:'red'});
+        itemManager.add({'id':id, 'content': 'blank', 'start': start, 'type':type, 'journal':'', 'labels':labels, className:'default'});
         break;
       case 'range':
         itemManager.add({'id':id, 'content': 'blank', 'start': start, 'end':end, 'type':type, 'journal':'', 'labels':labels, className:'default'});
         break;
+      case 'period':
+        var item = {'id':id, 'content': 'blank', 'start': start, 'end':end, 'type':'background', 'journal':'', 'labels':labels, className:'default', editable: true};
+        itemManager.add(item);
+        itemManager.periods.push(item);
     }
   }
 

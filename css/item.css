@@ -100,6 +100,10 @@
   border-color: rgb(149, 214, 65);
 }
 
+.vis-item.default {
+}
+
+
 /* HIDDEN ITEM STYLE */
 .vis-item.hidden {
   display:none;
