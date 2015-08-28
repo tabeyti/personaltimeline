@@ -94,6 +94,7 @@ app.factory('itemManager', function($rootScope){
         var item = {'id':id, 'content': 'blank', 'start': start, 'end':end, 'type':'background', 'journal':'', 'labels':labels, className:'default', editable: true};
         itemManager.add(item);
         itemManager.periods.push(item);
+        itemManager.updateLabels();
     }
   }
 

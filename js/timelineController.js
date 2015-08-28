@@ -97,22 +97,22 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
   });
 
   timeline.on('click', function(ev) {
-    if (ev.what == 'background') {
-      var visibleItemIds = timeline.getVisibleItems();
-      // locate the period clicked by comparing the clicked-time location
-      // to the locations of each period item visible
-      angular.forEach(visibleItemIds, function(itemId) {
-        var item = itemManager.get(itemId);
-        var startTime = new Date(item.start);
-        var endTime = new Date(item.end);
-        if (item.type == 'background' && startTime <= ev.time && endTime >= ev.time.getTime()) {
-          timeline.setSelection(item.id);
-          vm.periodSelected = item;
-          sharedService.broadcast(item, 'itemSelect', false);
-        }
-
-      });
-    }
+    // if (ev.what == 'background') {
+    //   var visibleItemIds = timeline.getVisibleItems();
+    //   // locate the period clicked by comparing the clicked-time location
+    //   // to the locations of each period item visible
+    //   angular.forEach(visibleItemIds, function(itemId) {
+    //     var item = itemManager.get(itemId);
+    //     var startTime = new Date(item.start);
+    //     var endTime = new Date(item.end);
+    //     if (item.type == 'background' && startTime <= ev.time && endTime >= ev.time.getTime()) {
+    //       timeline.setSelection(item.id);
+    //       vm.periodSelected = item;
+    //       sharedService.broadcast(item, 'itemSelect', false);
+    //     }
+    //
+    //   });
+    // }
   });
 
   timeline.on('contextmenu', function(props) {
@@ -124,12 +124,6 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
     else {
       sharedService.broadcast(itemManager.get(props.item), 'itemSelect', false);
     }
-  });
-
-  timeline.on('timechange', function (event) {
-    console.log("hi");
-    console.log(event);
-    // var item = itemManager.get();
   });
 
   vm.periodClick = function(period, ev) {
@@ -164,7 +158,6 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
           var rangeSize = (timeline.getWindow().end.getTime() - timeline.getWindow().start.getTime())/5;
           var endDate = new Date(clickedTime.getTime()+rangeSize);
           itemManager.addBlankItem('period', getNextId(), [], clickedTime, endDate);
-          timeline.setSelection(getLastId());
           sharedService.broadcast(itemManager.get(getLastId()), 'editItem', true);
         }]
       ];
