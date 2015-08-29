@@ -74,6 +74,7 @@ app.factory('itemManager', function($rootScope){
   itemManager.remove = function(item) {
     itemManager.items.remove(item);
     itemManager.updateLabels();
+    itemManager.updatePeriods();
   }
 
   itemManager.add = function(item) {

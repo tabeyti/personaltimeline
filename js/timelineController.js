@@ -96,25 +96,6 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
     }
   });
 
-  timeline.on('click', function(ev) {
-    // if (ev.what == 'background') {
-    //   var visibleItemIds = timeline.getVisibleItems();
-    //   // locate the period clicked by comparing the clicked-time location
-    //   // to the locations of each period item visible
-    //   angular.forEach(visibleItemIds, function(itemId) {
-    //     var item = itemManager.get(itemId);
-    //     var startTime = new Date(item.start);
-    //     var endTime = new Date(item.end);
-    //     if (item.type == 'background' && startTime <= ev.time && endTime >= ev.time.getTime()) {
-    //       timeline.setSelection(item.id);
-    //       vm.periodSelected = item;
-    //       sharedService.broadcast(item, 'itemSelect', false);
-    //     }
-    //
-    //   });
-    // }
-  });
-
   timeline.on('contextmenu', function(props) {
     timeline.setSelection(props.item);
     clickedTime = props.snappedTime;
@@ -129,6 +110,11 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
   vm.periodClick = function(period, ev) {
     timeline.setSelection(period.id);
     sharedService.broadcast(period, 'itemSelect', false);
+  };
+
+  vm.periodRowDelete = function(period) {
+    itemManager.remove(period);
+    sharedService.broadcast(0, 'nullSelect', false);
   };
 
   // ===========================================================================
