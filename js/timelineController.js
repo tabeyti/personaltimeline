@@ -127,6 +127,7 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
   });
 
   vm.periodClick = function(period, ev) {
+    timeline.setSelection(period.id);
     sharedService.broadcast(period, 'itemSelect', false);
   };
 
@@ -158,6 +159,7 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
           var rangeSize = (timeline.getWindow().end.getTime() - timeline.getWindow().start.getTime())/5;
           var endDate = new Date(clickedTime.getTime()+rangeSize);
           itemManager.addBlankItem('period', getNextId(), [], clickedTime, endDate);
+          timeline.setSelection(getLastId());
           sharedService.broadcast(itemManager.get(getLastId()), 'editItem', true);
         }]
       ];

@@ -7,19 +7,12 @@ Personal timeline is a timeline application directed towards chronicling your ow
 Blank
 
 ## To Do
-* Create custom item template in vis.js.
-* Create item/event JSON structure.
-  * May include item display panel data as well.
-* Determine how new items are going to be created:
-  * Double click?
-  * Dialogue window?
-  * Edit pane in Item Display Window?
-  * Edit button for editing slider data?
-* Item Display Window
-  * Add event listener for item selection/click.
-  * Create alternate panel above slider
-  * Update panel in slider after item event click.
-* Create Overview Panel for Navigation/Editing
+* Update background color of periods
+* Add delete button to period list item
+* Add background change on period selection
+
+## Bugs
+* On period creation, when title is changed on initial edit window (and saved), it isn't reflected in the period list item
 
 * Structure
   * Period
