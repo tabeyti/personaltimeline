@@ -159,6 +159,15 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
         ['Delete', function ($itemScope) {
           itemManager.remove(timeline.getSelection()[0]);
           sharedService.broadcast(0, 'nullSelect', false);
+        }],
+        ['Focus', function ($itemScope) {
+          selectedItem = itemManager.get(timeline.getSelection()[0]);
+          timeline.focus(selectedItem.id);
+          console.log(selectedItem);
+          // if item is a range, then change window size to the range of the item
+          if (selectedItem.type == 'range') {
+            timeline.setWindow(selectedItem.start, selectedItem.end);
+          }
         }]
       ];
     }
