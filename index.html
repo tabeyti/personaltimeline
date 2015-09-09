@@ -22,6 +22,10 @@
     <link href="css/item.css" rel="stylesheet" type="text/css" />
     <link href="css/main.css" rel="stylesheet" type="text/css" />
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script src="lib/datetimepicker.js"></script>
+    <link rel="stylesheet" href="css/datetimepicker.css" type="text/css">
+
     <script src="js/contextMenu.js"></script>
     <script src="js/app.js"></script>
     <script src="js/timelineController.js"></script>
@@ -71,7 +75,7 @@
       <md-content>
         <section layout="row" layout-sm="column" layout-align="left center">
           <md-button class="md-primary" ng-click="main.onSave($event)">Save</md-button>
-          <md-button class="md-primary" ng-click="main.test($event)">Bloop</md-button>
+
         </section>
       </md-content>
     </div>
@@ -96,9 +100,22 @@
                 <textarea ng-model="tempItem.journal" columns="1" md-maxlength="1000">{{item.journal}}</textarea>
               </md-input-container>
               <br>
+
               <label>Labels</label>
               <md-chips ng-model="tempItem.labels" readonly="false"></md-chips>
               <br>
+
+              <div class="dropdown">
+                <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
+                  <div class="input-group"><input type="text" class="form-control" data-ng-model="data.dateDropDownInput"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                  </div>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                  <datetimepicker data-ng-model="data.dateDropDownInput" data-on-set-time="onTimeSet(newDate, oldDate)"
+                    data-datetimepicker-config="{ dropdownSelector: '#dropdown2', startView:'day', minView:'day' }"/>
+                </ul>
+              </div
+
               <div class="menu-demo-container"layout-align="left center" layout="column">
                 <md-menu md-offset="0 -7">
                   <div layout="row" layout-align="left center">
@@ -151,9 +168,10 @@
             </md-content>
           </div>
         </md-whiteframe>
-
       </div>
-      <div flex></div>
+
+      <div flex>
+      </div>
     </div>
 
   </body>
