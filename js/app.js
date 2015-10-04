@@ -138,6 +138,8 @@ app.factory('itemManager', function($rootScope){
 
   itemManager.cloneItem = function(item) {
     var tempItem = {
+      start: item.start,
+      end: item.end,
       journal: item.journal,
       content: item.content,
       type: item.type,

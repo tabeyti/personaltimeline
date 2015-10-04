@@ -209,6 +209,11 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
     });
   }
 
+  vm.test = function(event) {
+    console.log(itemManager.getData());
+
+  }
+
 
 
 });

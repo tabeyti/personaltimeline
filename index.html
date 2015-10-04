@@ -14,8 +14,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-animate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.js"></script>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.0/angular-material.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.0/angular-material.min.css">
 
     <script src="lib/vis/vis.js"></script>
   	<link href="lib/vis/vis.css" rel="stylesheet" type="text/css" />
@@ -27,6 +27,7 @@
     <script src="js/timelineController.js"></script>
     <script src="js/settingsController.js"></script>
     <script src="js/itemContentDisplayController.js"></script>
+
 
   </head>
   <body ng-app="app">
@@ -99,6 +100,10 @@
               <label>Labels</label>
               <md-chips ng-model="tempItem.labels" readonly="false"></md-chips>
               <br>
+              <label>Date</label>
+              <md-datepicker ng-model="startDate" md-placeholder="Enter date"></md-datepicker>
+              <md-datepicker ng-model="endDate" ng-show="displaySecondDate" md-placeholder="Enter date"></md-datepicker>
+              <br>
               <div class="menu-demo-container"layout-align="left center" layout="column">
                 <md-menu md-offset="0 -7">
                   <div layout="row" layout-align="left center">
@@ -153,7 +158,8 @@
         </md-whiteframe>
 
       </div>
-      <div flex></div>
+      <div flex>
+      </div>
     </div>
 
   </body>

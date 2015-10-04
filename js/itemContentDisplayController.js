@@ -75,6 +75,11 @@ app.controller("ItemContentDisplayController", function($scope, $mdDialog, $http
 app.controller('DialogController', function($scope, $mdDialog, item, itemManager) {
   $scope.item = item;
   $scope.tempItem = itemManager.cloneItem(item);
+  $scope.displaySecondDate = (item.type == 'range' || item.type == 'period') ? true : false;
+  $scope.startDate = new Date(item.start);
+  $scope.endDate = new Date(item.end);
+
+
 
   $scope.hide = function() {
     $mdDialog.hide();
