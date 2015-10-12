@@ -72,12 +72,13 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
   function getLastId() { return nextId - 1; };
 
   vm.getData = function() {
-    var data = itemManager.get({
-      type: {
-        start: 'ISODate',
-        end: 'ISODate'
-      }
-    });
+    var data = itemManager.get();
+    // var data = itemManager.get({
+    //   type: {
+    //     start: 'ISODate',
+    //     end: 'ISODate'
+    //   }
+    // });
     return JSON.stringify(data, null, 2);
   };
 
@@ -97,8 +98,9 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
   });
 
   timeline.on('contextmenu', function(props) {
+    console.log(props)
     timeline.setSelection(props.item);
-    clickedTime = props.snappedTime;
+    clickedTime = props.snappedTime.toDate();
     if (props.item == null) {
       sharedService.broadcast(0, 'nullSelect', false, '');
     }

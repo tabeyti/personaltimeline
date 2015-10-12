@@ -75,7 +75,7 @@ app.controller("ItemContentDisplayController", function($scope, $mdDialog, $http
 app.controller('DialogController', function($scope, $mdDialog, item, itemManager) {
   $scope.item = item;
   $scope.tempItem = itemManager.cloneItem(item);
-  $scope.displaySecondDate = (item.type == 'range' || item.type == 'period') ? true : false;
+  $scope.displayDates = (item.type == 'background') ? true : false;
   $scope.startDate = new Date(item.start);
   $scope.endDate = new Date(item.end);
 
@@ -94,6 +94,11 @@ app.controller('DialogController', function($scope, $mdDialog, item, itemManager
       $scope.item.content = $scope.tempItem.content;
       $scope.item.labels = $scope.tempItem.labels;
       $scope.item.className = $scope.tempItem.className;
+      if ($scope.displayDates) {
+        console.log($scope.startDate)
+        $scope.item.start = $scope.startDate
+        $scope.item.end =  $scope.endDate
+      }
       itemManager.updateItem($scope.item);
     }
     $mdDialog.hide(answer);

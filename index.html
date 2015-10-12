@@ -18,7 +18,8 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.0/angular-material.min.css">
 
     <script src="lib/vis/vis.js"></script>
-  	<link href="lib/vis/vis.css" rel="stylesheet" type="text/css" />
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.9.0/vis.min.js"> -->
+    <link href="lib/vis/vis.css" rel="stylesheet" type="text/css" />
     <link href="css/item.css" rel="stylesheet" type="text/css" />
     <link href="css/main.css" rel="stylesheet" type="text/css" />
 
@@ -101,8 +102,8 @@
               <md-chips ng-model="tempItem.labels" readonly="false"></md-chips>
               <br>
               <label>Date</label>
-              <md-datepicker ng-model="startDate" md-placeholder="Enter date"></md-datepicker>
-              <md-datepicker ng-model="endDate" ng-show="displaySecondDate" md-placeholder="Enter date"></md-datepicker>
+              <md-datepicker ng-model="startDate" ng-show="displayDates" md-placeholder="Enter date"></md-datepicker>
+              <md-datepicker ng-model="endDate" ng-show="displayDates" md-placeholder="Enter date"></md-datepicker>
               <br>
               <div class="menu-demo-container"layout-align="left center" layout="column">
                 <md-menu md-offset="0 -7">
@@ -142,10 +143,6 @@
               <h2><span>{{item.content}}</span></h2>
             </div>
           </md-toolbar>
-          <div layout-margin layout="row">
-            <div flex>Start: {{item.start}}</div>
-            <div ng-if=item.type=='range'> End: {{item.end}}</div>
-          </div>
           <div flex flex-order="1">
             <md-chips ng-model="item.labels" readonly="true"></md-chips>
           </div>
