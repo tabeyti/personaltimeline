@@ -19,6 +19,10 @@
     <link href="css/item.css" rel="stylesheet" type="text/css" />
     <link href="css/main.css" rel="stylesheet" type="text/css" />
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script src="lib/datetimepicker.js"></script>
+    <link rel="stylesheet" href="css/datetimepicker.css" type="text/css">
+
     <script src="js/contextMenu.js"></script>
     <script src="js/app.js"></script>
     <script src="js/timelineController.js"></script>
@@ -69,7 +73,7 @@
       <md-content>
         <section layout="row" layout-sm="column" layout-align="left center">
           <md-button class="md-primary" ng-click="main.onSave($event)">Save</md-button>
-          <md-button class="md-primary" ng-click="main.test($event)">Bloop</md-button>
+
         </section>
       </md-content>
     </div>
@@ -94,6 +98,7 @@
                 <textarea ng-model="tempItem.journal" columns="1" md-maxlength="1000">{{item.journal}}</textarea>
               </md-input-container>
               <br>
+
               <label>Labels</label>
               <md-chips ng-model="tempItem.labels" readonly="false"></md-chips>
               <br>
@@ -101,6 +106,14 @@
               <md-datepicker ng-model="startDate" ng-show="displayDates" md-placeholder="Enter date"></md-datepicker>
               <md-datepicker ng-model="endDate" ng-show="displayDates" md-placeholder="Enter date"></md-datepicker>
               <br>
+                  </div>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                  <datetimepicker data-ng-model="data.dateDropDownInput" data-on-set-time="onTimeSet(newDate, oldDate)"
+                    data-datetimepicker-config="{ dropdownSelector: '#dropdown2', startView:'day', minView:'day' }"/>
+                </ul>
+              </div
+
               <div class="menu-demo-container"layout-align="left center" layout="column">
                 <md-menu md-offset="0 -7">
                   <div layout="row" layout-align="left center">
@@ -139,6 +152,10 @@
               <h2><span>{{item.content}}</span></h2>
             </div>
           </md-toolbar>
+          <div layout-margin layout="row">
+            <div flex>Start: {{item.start}}</div>
+            <div ng-if=item.type=='range'> End: {{item.end}}</div>
+          </div>
           <div flex flex-order="1">
             <md-chips ng-model="item.labels" readonly="true"></md-chips>
           </div>
@@ -149,7 +166,9 @@
             </md-content>
           </div>
         </md-whiteframe>
+      </div>
 
+      <div flex>
       </div>
       <div flex>
       </div>

@@ -81,6 +81,8 @@ app.controller('DialogController', function($scope, $mdDialog, item, itemManager
 
 
 
+  console.log($scope.$data);
+
   $scope.hide = function() {
     $mdDialog.hide();
   };
@@ -107,6 +109,12 @@ app.controller('DialogController', function($scope, $mdDialog, item, itemManager
   $scope.colorClasses = [
     "red","orange","yellow","green","teal","blue"
   ];
+
+  $scope.onTimeSet = function (newDate, oldDate) {
+    console.log($scope.data.dateDropDownInput);
+    // console.log(newDate);
+    // console.log(oldDate);
+  }
 
   $scope.announceSelection = function(index) {
     // console.log($scope.colorClasses[index]);
