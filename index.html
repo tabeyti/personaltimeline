@@ -106,14 +106,6 @@
               <md-datepicker ng-model="startDate" ng-show="displayDates" md-placeholder="Enter date"></md-datepicker>
               <md-datepicker ng-model="endDate" ng-show="displayDates" md-placeholder="Enter date"></md-datepicker>
               <br>
-                  </div>
-                </a>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                  <datetimepicker data-ng-model="data.dateDropDownInput" data-on-set-time="onTimeSet(newDate, oldDate)"
-                    data-datetimepicker-config="{ dropdownSelector: '#dropdown2', startView:'day', minView:'day' }"/>
-                </ul>
-              </div
-
               <div class="menu-demo-container"layout-align="left center" layout="column">
                 <md-menu md-offset="0 -7">
                   <div layout="row" layout-align="left center">
@@ -152,10 +144,6 @@
               <h2><span>{{item.content}}</span></h2>
             </div>
           </md-toolbar>
-          <div layout-margin layout="row">
-            <div flex>Start: {{item.start}}</div>
-            <div ng-if=item.type=='range'> End: {{item.end}}</div>
-          </div>
           <div flex flex-order="1">
             <md-chips ng-model="item.labels" readonly="true"></md-chips>
           </div>
