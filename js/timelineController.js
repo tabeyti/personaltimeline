@@ -5,7 +5,6 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
   var vm = this;
   vm.title = 'Personal Timeline';
   var nextId = 1;
-  vm.derp = '';
   vm.periodSelected = {};
   vm.timelineMaxHeight = '300px';
   vm.periods = itemManager.periods;
@@ -89,6 +88,7 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
   // register item select listener, so when an item is clicked, content
   // is displayed above the timeline
   timeline.on('select', function(ev) {
+    console.log(itemManager.items);
     if (ev.items.length == 0) {
       sharedService.broadcast(0, 'nullSelect', false);
     }
