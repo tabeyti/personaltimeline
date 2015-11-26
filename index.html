@@ -10,8 +10,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-animate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.0/angular-material.min.js"></script>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.0/angular-material.min.css">
+    <!-- Angular Material Javascript now available via Google CDN; version 0.11.2 used here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">
 
     <script src="lib/vis/vis.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.9.0/vis.min.js"> -->
@@ -83,7 +84,7 @@
       <div ng-show="editEnabled" class="item-display">
 
         <script type="text/ng-template" id="item.dialog.html">
-        <md-dialog  aria-label="Item Edit Dialog">
+        <md-dialog flex='90' aria-label="Item Edit Dialog">
           <form>
           <md-toolbar layout-padding>
             <md-input-container>
@@ -95,7 +96,7 @@
 
               <md-input-container flex>
                 <label>Journal</label>
-                <textarea ng-model="tempItem.journal" columns="1" md-maxlength="1000">{{item.journal}}</textarea>
+                <textarea ng-model="tempItem.journal" columns="1">{{item.journal}}</textarea>
               </md-input-container>
               <br>
 
@@ -106,13 +107,13 @@
               <md-datepicker ng-model="startDate" ng-show="displayDates" md-placeholder="Enter date"></md-datepicker>
               <md-datepicker ng-model="endDate" ng-show="displayDates" md-placeholder="Enter date"></md-datepicker>
               <br>
-                  </div>
+              <div>
                 </a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                   <datetimepicker data-ng-model="data.dateDropDownInput" data-on-set-time="onTimeSet(newDate, oldDate)"
                     data-datetimepicker-config="{ dropdownSelector: '#dropdown2', startView:'day', minView:'day' }"/>
                 </ul>
-              </div
+              </div>
 
               <div class="menu-demo-container"layout-align="left center" layout="column">
                 <md-menu md-offset="0 -7">
@@ -161,7 +162,7 @@
           </div>
           <div flex flex-order="2">
             <md-content layout layout-align="left center">
-                <pre style="width: 100%;">{{item.journal || 'no description'}}</pre>
+                <div style="width: 100%;white-space: pre-wrap;">{{item.journal || 'no description'}}</div>
               <!-- </a> -->
             </md-content>
           </div>
