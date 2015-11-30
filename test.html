@@ -53,7 +53,7 @@
     </div>
 
     <div ng-controller="MainController as main" layout="column">
-      <md-content layout="row">
+      <md-content flex layout="row">
         <div layout="column" flex="85">
           <div id="timelineBar" context-menu="menuOptions(item)"></div>
         </div>
@@ -133,7 +133,7 @@
         </md-dialog>
         </script>
 
-        <md-whiteframe class="md-whiteframe-z1" layout="column" layout-margin >
+        <md-whiteframe class="md-whiteframe-z1" layout="column" layout-margin>
           <md-toolbar>
             <div class="md-toolbar-tools">
               <md-button class="md-icon-button" ng-click="showItemEdit($event)" ng-disabled="!editEnabled" aria-label="Edit">
@@ -142,11 +142,14 @@
               <h2><span>{{item.content}}</span></h2>
             </div>
           </md-toolbar>
-          <div flex-order="1">
+          <div flex flex-order="1">
             <md-chips ng-model="item.labels" readonly="true"></md-chips>
           </div>
-          <div flex-order="2" style="padding:5px">
-            <div style="width: 100%;white-space: pre-wrap;">{{item.journal || 'no description'}}</div>
+          <div flex flex-order="2">
+            <md-content layout layout-align="left center">
+                <div style="width: 100%;white-space: pre-wrap;">{{item.journal || 'no description'}}</div>
+              <!-- </a> -->
+            </md-content>
           </div>
         </md-whiteframe>
       </div>

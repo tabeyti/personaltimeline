@@ -65,9 +65,6 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
       );
     });
 
-  function populateLabels(items) {
-
-  };
   function getNextId() { return nextId++; };
   function getLastId() { return nextId - 1; };
 
