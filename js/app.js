@@ -27,7 +27,7 @@ app.factory('sharedService', function($rootScope){
 // and all that jazz.
 ////////////////////////////////////////////////////////////////////////////////
 app.factory('itemManager', function($rootScope){
-  var itemManager = this;
+  var itemManager = {};
   itemManager.items = new vis.DataSet({
     type: { start: 'ISODate', end: 'ISODate' }
   });
@@ -79,6 +79,11 @@ app.factory('itemManager', function($rootScope){
 
   itemManager.add = function(item) {
     itemManager.items.add(item);
+  }
+
+  itemManager.getItems = function() {
+    console.log(itemManager.items.length);
+    return itemManager.items.get();
   }
 
   itemManager.addBlankItem = function(type, id, labels, start, end) {
