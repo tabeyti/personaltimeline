@@ -161,7 +161,7 @@
         <md-tab label="List">
           <md-list>
             <div ng-controller="ListViewController as lv" layout="column">
-              <md-list-item ng-repeat='item in items["_data"]' class="md-3-line md-long-text">
+              <md-list-item ng-repeat="item in items['_data'] | toArray | orderBy:'-start' : true " class="md-3-line md-long-text">
                 <md-subheader >{{item.content}}</md-subheader>
                 <md-divider></md-divider>
               </md-list-item>
