@@ -1,4 +1,4 @@
-var app = angular.module("app", ['ui.bootstrap.contextMenu', 'ngMaterial', 'ui.bootstrap.datetimepicker']);
+var app = angular.module("app", ['ui.bootstrap.contextMenu', 'ngMaterial', 'scDateTime']);
 
 app.config( function($mdThemingProvider){
     // Configure a dark theme with primary foreground yellow

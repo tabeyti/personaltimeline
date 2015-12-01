@@ -18,10 +18,9 @@
     <link href="lib/vis/vis.css" rel="stylesheet" type="text/css" />
     <link href="css/item.css" rel="stylesheet" type="text/css" />
     <link href="css/main.css" rel="stylesheet" type="text/css" />
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
-    <script src="lib/datetimepicker.js"></script>
-    <link rel="stylesheet" href="css/datetimepicker.css" type="text/css">
+    <link rel='stylesheet' href='lib/sc-date-time-1.1.4/sc-date-time.css'>
+    <script src='lib/sc-date-time-1.1.4/sc-date-time.js'></script>
 
     <script src="js/contextMenu.js"></script>
     <script src="js/app.js"></script>
@@ -29,6 +28,7 @@
     <script src="js/settingsController.js"></script>
     <script src="js/itemContentDisplayController.js"></script>
     <script src="js/listViewController.js"></script>
+
 
 
   </head>
@@ -53,124 +53,119 @@
       </md-sidenav>
     </div>
 
-    <md-content>
-      <md-tabs md-dynamic-height md-border-bottom>
-        <md-tab label="Visual">
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="Visual">
 
-          <div ng-controller="MainController as main" layout="column">
-            <md-content layout="row">
-              <div layout="column" flex="85">
-                <div id="timelineBar" context-menu="menuOptions(item)"></div>
-              </div>
-              <md-list flex class="md-whiteframe-z3" style="max-height:300px">
-                <md-subheader class="md-no-sticky">Periods</md-subheader><md-divider></md-divider>
-                <md-list-item ng-repeat="period in main.periods" ng-click="main.periodClick(period, $event)">
-                  <p>{{period.content}}</p>
-                  <md-icon-button class="md-secondary" ng-click="main.periodRowDelete(period)">
-                    <i class="material-icons md-18" ng-class="font.theme" style="color:black;vertical-align: middle">clear</i>
-                  </md-icon-button>
-                  <md-divider></md-divider>
-                </md-list-item>
-              </md-list>
-            </md-content>
-            <md-content>
-              <section layout="row" layout-sm="column" layout-align="left center">
-                <md-button class="md-primary" ng-click="main.onSave($event)">Save</md-button>
-              </section>
-            </md-content>
-          </div>
-
-          <br>
-
-          <div ng-controller="ItemContentDisplayController as itemDisplay" layout="row">
-            <div ng-show="editEnabled" class="item-display">
-
-              <script type="text/ng-template" id="item.dialog.html">
-              <md-dialog flex='90' aria-label="Item Edit Dialog">
-                <form>
-                <md-toolbar layout-padding>
-                  <md-input-container>
-                     <input ng-model="tempItem.content" aria-label="Title" style="color:white">
-                   </md-input-container>
-                </md-toolbar>
-                <md-dialog-content>
-                  <div layout="column" layout-sm="column">
-
-                    <md-input-container flex>
-                      <label>Journal</label>
-                      <textarea ng-model="tempItem.journal" columns="1">{{item.journal}}</textarea>
-                    </md-input-container>
-                    <br>
-
-                    <label>Labels</label>
-                    <md-chips ng-model="tempItem.labels" readonly="false"></md-chips>
-                    <br>
-                    <label>Date</label>
-                    <md-datepicker ng-model="startDate" ng-show="displayDates" md-placeholder="Enter date"></md-datepicker>
-                    <md-datepicker ng-model="endDate" ng-show="displayDates" md-placeholder="Enter date"></md-datepicker>
-                    <br>
-                    <div class="menu-demo-container"layout-align="left center" layout="column">
-                      <md-menu md-offset="0 -7">
-                        <div layout="row" layout-align="left center">
-                          <md-button aria-label="Open Color Picker" class="md-icon-button" ng-click="$mdOpenMenu()">
-                            <i md-menu-origin class="material-icons md-36">format_color_fill</i>
-                          </md-button>
-                          <div ng-class="tempItem.className" style="width:100%;border-radius:50px"></div>
-                        </div>
-                        <md-menu-content width="3">
-                          <md-menu-item ng-repeat="color in colorClasses">
-                            <md-button ng-class="color" ng-click="announceSelection($index)">
-                              <span md-menu-align-target>{{color}}</span>
-                            </md-button>
-                          </md-menu-item>
-                        </md-menu-content>
-                      </md-menu>
-                    </div>
-
-                  </div>
-                </md-dialog-content>
-                <div class="md-actions" layout="row">
-                  <span flex></span>
-                  <md-button ng-click="answer('save')" class="md-primary">Save</md-button>
-                  <md-button ng-click="answer('cancel')" class="md-primary">Cancel</md-button>
-                </div>
-                </form>
-              </md-dialog>
-              </script>
-
-              <md-whiteframe class="md-whiteframe-z1" layout="column" layout-margin >
-                <md-toolbar>
-                  <div class="md-toolbar-tools">
-                    <md-button class="md-icon-button" ng-click="showItemEdit($event)" ng-disabled="!editEnabled" aria-label="Edit">
-                      <md-icon md-svg-icon="https://upload.wikimedia.org/wikipedia/commons/7/77/Gear_icon.svg" ng-class="font.theme"></md-icon>
-                    </md-button>
-                    <h2><span>{{item.content}}</span></h2>
-                  </div>
-                </md-toolbar>
-                <div flex-order="1">
-                  <md-chips ng-model="item.labels" readonly="true"></md-chips>
-                </div>
-                <div flex-order="2" style="padding:5px">
-                  <div style="width: 100%;white-space: pre-wrap;">{{item.journal || 'no description'}}</div>
-                </div>
-              </md-whiteframe>
+        <div ng-controller="MainController as main" layout="column">
+          <md-content layout="row">
+            <div layout="column" flex="85">
+              <div id="timelineBar" context-menu="menuOptions(item)"></div>
             </div>
-          </div>
-        </md-tab>
-
-        <md-tab label="List">
-          <md-list>
-            <div ng-controller="ListViewController as lv" layout="column">
-              <md-list-item ng-repeat="item in items['_data'] | toArray | orderBy:'-start' : true " class="md-3-line md-long-text">
-                <md-subheader >{{item.content}}</md-subheader>
+            <md-list flex class="md-whiteframe-z3" style="max-height:300px">
+              <md-subheader class="md-no-sticky">Periods</md-subheader><md-divider></md-divider>
+              <md-list-item ng-repeat="period in main.periods" ng-click="main.periodClick(period, $event)">
+                <p>{{period.content}}</p>
+                <md-icon-button class="md-secondary" ng-click="main.periodRowDelete(period)">
+                  <i class="material-icons md-18" ng-class="font.theme" style="color:black;vertical-align: middle">clear</i>
+                </md-icon-button>
                 <md-divider></md-divider>
               </md-list-item>
-            </div>
-          </md-list>
-        </md-tab>
+            </md-list>
+          </md-content>
+          <md-content>
+            <section layout="row" layout-sm="column" layout-align="left center">
+              <md-button class="md-primary" ng-click="main.onSave($event)">Save</md-button>
+            </section>
+          </md-content>
+        </div>
 
-        </md-tabs>
-      </md-content>
+      </md-tab>
+
+      <md-tab label="List">
+        <md-list>
+          <div ng-controller="ListViewController as lv" layout="column">
+            <md-list-item ng-click="openDialog(item, $event)" ng-repeat="item in items['_data'] | toArray | orderBy:'-start' : true " class="secondary-button-padding">
+              <md-subheader >{{item.content}}</md-subheader>
+              <md-divider></md-divider>
+            </md-list-item>
+          </div>
+        </md-list>
+
+      </md-tab>
+    </md-tabs>
+
+    <br>
+
+    <div ng-controller="ItemContentDisplayController as itemDisplay" layout="row" ng-show="editEnabled" class="item-display">
+      <script type="text/ng-template" id="item.dialog.html">
+      <md-dialog flex='90' aria-label="Item Edit Dialog">
+        <form>
+        <md-toolbar layout-padding>
+          <md-input-container>
+             <input ng-model="tempItem.content" aria-label="Title" style="color:white">
+           </md-input-container>
+        </md-toolbar>
+        <md-dialog-content>
+          <div layout="column" layout-sm="column">
+
+            <md-input-container flex>
+              <label>Journal</label>
+              <textarea ng-model="tempItem.journal" columns="1">{{item.journal}}</textarea>
+            </md-input-container>
+            <br>
+            <br>
+            <label>Labels</label>
+            <md-chips ng-model="tempItem.labels" readonly="false"></md-chips>
+            <br>
+            <label>Date</label>
+            <time-date-picker ng-model="startDate"></time-date-picker>
+            <!-- <md-datepicker ng-model="startDate" md-placehlder="Enter date"></md-datepicker>
+            <md-datepicker ng-model="endDate" ng-show="displayDates" md-placeholder="Enter date"></md-datepicker> -->
+            <br>
+            <div class="menu-demo-container"layout-align="left center" layout="column">
+              <md-menu md-offset="0 -7">
+                <div layout="row" layout-align="left center">
+                  <md-button aria-label="Open Color Picker" class="md-icon-button" ng-click="$mdOpenMenu()">
+                    <i md-menu-origin class="material-icons md-36">format_color_fill</i>
+                  </md-button>
+                  <div ng-class="tempItem.className" style="width:100%;border-radius:50px"></div>
+                </div>
+                <md-menu-content width="3">
+                  <md-menu-item ng-repeat="color in colorClasses">
+                    <md-button ng-class="color" ng-click="announceSelection($index)">
+                      <span md-menu-align-target>{{color}}</span>
+                    </md-button>
+                  </md-menu-item>
+                </md-menu-content>
+              </md-menu>
+            </div>
+
+          </div>
+        </md-dialog-content>
+        <div class="md-actions" layout="row">
+          <span flex></span>
+          <md-button ng-click="answer('save')" class="md-primary">Save</md-button>
+          <md-button ng-click="answer('cancel')" class="md-primary">Cancel</md-button>
+        </div>
+        </form>
+      </md-dialog>
+      </script>
+      <md-whiteframe class="md-whiteframe-z1" layout="column" layout-margin >
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" ng-click="showItemEdit($event)" ng-disabled="!editEnabled" aria-label="Edit">
+              <md-icon md-svg-icon="https://upload.wikimedia.org/wikipedia/commons/7/77/Gear_icon.svg" ng-class="font.theme"></md-icon>
+            </md-button>
+            <h2><span>{{item.content}}</span></h2>
+          </div>
+        </md-toolbar>
+        <div flex-order="1">
+          <md-chips ng-model="item.labels" readonly="true"></md-chips>
+        </div>
+        <div flex-order="2" style="padding:5px">
+          <div style="width: 100%;white-space: pre-wrap;">{{item.journal || 'no description'}}</div>
+        </div>
+      </md-whiteframe>
     </div>
 
   </body>

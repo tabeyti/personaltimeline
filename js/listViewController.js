@@ -3,8 +3,10 @@ app.controller('ListViewController', function($scope, $http, sharedService, item
   $scope.items = itemManager.items;
   $scope.letterLimit = 3;
 
-  $scope.$watch('itemManager.items', function(newVal, oldVal) {
-    $scope.items =  itemManager.items;
-  }, true);
+  $scope.openDialog = function(item, event) {
+    if (undefined == item) { return; }
+    sharedService.broadcast(itemManager.get(item.id), 'itemSelect', false);
+  }
+
 
 });

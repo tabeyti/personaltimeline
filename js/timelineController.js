@@ -85,7 +85,6 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
   // register item select listener, so when an item is clicked, content
   // is displayed above the timeline
   timeline.on('select', function(ev) {
-    console.log(itemManager.items);
     if (ev.items.length == 0) {
       sharedService.broadcast(0, 'nullSelect', false);
     }
@@ -104,6 +103,10 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
     else {
       sharedService.broadcast(itemManager.get(props.item), 'itemSelect', false);
     }
+  });
+
+  $scope.$on('handlePublish', function(){
+    timeline.setSelection(sharedService.item.id);
   });
 
   vm.periodClick = function(period, ev) {
