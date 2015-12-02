@@ -43,12 +43,14 @@ app.factory('itemManager', function($rootScope){
   });
   itemManager.labels = {};
   itemManager.periods = [];
+  itemManager.years = [];
   itemManager.selectedLabel = 'All';
 
   itemManager.addSet = function(json) {
     itemManager.items.add(json);
     itemManager.updateLabels();
     itemManager.updatePeriods();
+    itemManager.updateYears();
   };
 
   itemManager.updateLabels = function() {
@@ -73,28 +75,40 @@ app.factory('itemManager', function($rootScope){
     });
   };
 
+  itemManager.updateYears = function() {
+    itemManager.years.length = 0;
+    itemManager.items.forEach(function(item) {
+      var year = new Date(item.start).getFullYear();
+      if (itemManager.years.indexOf(year) < 0) {
+        itemManager.years.push(year);
+      }
+    });
+    itemManager.years.sort();
+  };
+
   itemManager.clear = function() {
     itemManager.items.clear();
-  }
+  };
 
   itemManager.get = function(item) {
     return itemManager.items.get(item);
-  }
+  };
 
   itemManager.remove = function(item) {
     itemManager.items.remove(item);
     itemManager.updateLabels();
     itemManager.updatePeriods();
-  }
+    itemManager.updateYears();
+  };
 
   itemManager.add = function(item) {
     itemManager.items.add(item);
-  }
+  };
 
   itemManager.getItems = function() {
     console.log(itemManager.items.length);
     return itemManager.items.get();
-  }
+  };
 
   itemManager.addBlankItem = function(type, id, labels, start, end) {
     switch (type)
@@ -117,7 +131,7 @@ app.factory('itemManager', function($rootScope){
   itemManager.updateItem = function(item) {
     itemManager.items.update(item);
     itemManager.updateLabels();
-  }
+  };
 
   itemManager.filterDisplayedItems = function(filterLabel){
     itemManager.selectedLabel = filterLabel;
@@ -149,7 +163,7 @@ app.factory('itemManager', function($rootScope){
     });
     console.log(results);
     return results;
-  }
+  };
 
   itemManager.cloneItem = function(item) {
     var tempItem = {

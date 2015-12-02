@@ -84,10 +84,22 @@
       <md-tab label="List">
         <md-list>
           <div ng-controller="ListViewController as lv" layout="column">
-            <md-list-item ng-click="openDialog(item, $event)" ng-repeat="item in items['_data'] | toArray | orderBy:'-start' : true " class="secondary-button-padding">
-              <md-subheader >{{item.content}}</md-subheader>
+              <md-subheader ng-repeat="year in years" class="md-no-sticky">
+                {{year}}
+                <md-list-item ng-click="openDialog(item, $event)"
+                  ng-repeat="item in items['_data'] | toArray | orderBy:'-start' : true "
+                  class="md-3-line" ng-if="matchesYear(item, year)" layout="column">
+                  <div layout="column">
+                    <h3>{{item.content}}</h3>
+                    <h4>{{item.start | date:'y MMM d h:mm:ss a'}}</h4>
+                  </div>
+                </md-list-item>
+              </md-subheader>
+            <!-- <md-list-item ng-click="openDialog(item, $event)" ng-repeat="item in items['_data'] | toArray | orderBy:'-start' : true " class="secondary-button-padding">
+              <md-subheader >{{item.start | date:'y MMM d h:mm:ss a'}} - {{item.content}}</md-subheader>
               <md-divider></md-divider>
-            </md-list-item>
+            </md-list-item> -->
+            <md-button class="md-primary" ng-click="test()">Test</md-button>
           </div>
         </md-list>
 
