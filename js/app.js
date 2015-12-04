@@ -138,18 +138,20 @@ app.factory('itemManager', function($rootScope){
     if ('All' == filterLabel) {
       itemManager.items.forEach(function(item) {
         item.className = item.storedClassName;
+        item.visible = true;
         itemManager.items.update(item);
       });
     }
     else { // only show items with the label passed
       itemManager.items.forEach(function(item) {
         var found = false;
+        item.visible = false;
         angular.forEach(item.labels, function(label) {
           if (label == filterLabel) {
-            found = true;
+             item.visible = true;
           }
         });
-        (found) ? item.className = item.storedClassName : item.className = "hidden";
+        (item.visible) ? item.className = item.storedClassName : item.className = "hidden";
         itemManager.items.update(item);
       });
     }

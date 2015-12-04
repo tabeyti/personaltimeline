@@ -6,7 +6,7 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
   vm.title = 'Personal Timeline';
   var nextId = 1;
   vm.periodSelected = {};
-  vm.timelineMaxHeight = '300px';
+  vm.timelineMaxHeight = '400px';
   vm.periods = itemManager.periods;
 
   $scope.$watchCollection('itemManager.periods', function(newVal, oldVal) {
