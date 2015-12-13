@@ -9,13 +9,6 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
   vm.timelineMaxHeight = '400px';
   vm.periods = itemManager.periods;
 
-  $scope.$watchCollection('itemManager.periods', function(newVal, oldVal) {
-    vm.periods = itemManager.periods;
-    console.log('update!');
-    console.log(itemManager.periods);
-  },
-  true);
-
   // ===========================================================================
   // Timeline setup
   // ===========================================================================
@@ -107,6 +100,7 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
 
   $scope.$on('handlePublish', function(){
     timeline.setSelection(sharedService.item.id);
+    timeline.focus(sharedService.item.id);
   });
 
   vm.periodClick = function(period, ev) {

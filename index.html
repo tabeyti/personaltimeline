@@ -55,9 +55,28 @@
     </div>
 
     <div ng-controller="SearchItemController as sic" layout="row">
-      <md-autocomplete md-search-text="" md-items="item in sic.querySearch(sic.searchText)" md-no-cache="sic.noCache" md-selected-item="sic.selectedItem" md-search-text="sic.searchText" md-item-text="item.name" md-min-length="0" placeholder="Enter in an item to locate." md-menu-class="autocomplete-custom-template">
+      <md-autocomplete
+        md-items="item in sic.querySearch(sic.searchText)"
+        md-no-cache="sic.noCache"
+        md-selected-item="sic.selectedItem"
+        md-search-text="sic.searchText"
+        md-item-text="item.content"
+        md-min-length="0"
+        md-selected-item-change="sic.selectedItemChange(item)"
+        placeholder="Enter in an item to locate."
+        md-menu-class="autocomplete-custom-template">
         <md-item-template>
-          <span md-highlight-text="sic.searchText" md-highlight-flags="^i">{{item.content}}</span>
+          <span class="item-title">
+            <span> {{item.content}} </span>
+          </span>
+          <span class="item-metadata">
+            <span class="item-metastat">
+              <strong>{{item.start | date:'MMM d h:mm:ss a'}}</strong>
+            </span>
+            <!-- <span class="item-metastat">
+              <strong>{{item.forks}}</strong> forks
+            </span> -->
+          </span>
         </md-item-template>
       </md-autocomplete>
     </div>
@@ -97,7 +116,7 @@
                   {{year}}
                   </md-subheader>
                   <md-list>
-                    <md-list-item ng-click="openDialog(item, $event)"
+                    <md-list-item ng-click="itemClicked(item, $event)"
                       ng-repeat="item in items['_data'] | toArray | orderBy:'-start' : true "
                       class="md-3-line" ng-if="matchesYear(item, year) && item.visible" layout="column">
                       <div layout="column">
