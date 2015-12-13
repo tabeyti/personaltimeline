@@ -45,9 +45,14 @@ app.factory('itemManager', function($rootScope){
   itemManager.periods = [];
   itemManager.years = [];
   itemManager.selectedLabel = 'All';
+  itemManager.itemsSource = [];
 
   itemManager.addSet = function(json) {
+    console.log('adding set!');
     itemManager.items.add(json);
+    itemManager.items.forEach(function (item) {
+      itemManager.itemsSource.push(item);
+    });
     itemManager.updateLabels();
     itemManager.updatePeriods();
     itemManager.updateYears();
@@ -88,6 +93,7 @@ app.factory('itemManager', function($rootScope){
 
   itemManager.clear = function() {
     itemManager.items.clear();
+    itemManager.itemsSource.length = 0;
   };
 
   itemManager.get = function(item) {
@@ -96,6 +102,8 @@ app.factory('itemManager', function($rootScope){
 
   itemManager.remove = function(item) {
     itemManager.items.remove(item);
+    var index = itemManager.itemsSource.indexOf(item);
+    if (index > -1) { itemManager.itemsSource.splice(index, 1); }
     itemManager.updateLabels();
     itemManager.updatePeriods();
     itemManager.updateYears();

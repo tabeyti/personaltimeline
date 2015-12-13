@@ -10,7 +10,7 @@ app.controller('ListViewController', function($scope, $http, sharedService, item
   }
 
   $scope.test = function() {
-    console.log($scope.years);
+    
   }
 
   $scope.matchesYear = function(item, year) {

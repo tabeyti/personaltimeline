@@ -28,7 +28,7 @@
     <script src="js/settingsController.js"></script>
     <script src="js/itemContentDisplayController.js"></script>
     <script src="js/listViewController.js"></script>
-
+    <script src="js/searchItemController.js"></script>
 
 
   </head>
@@ -54,7 +54,15 @@
       </md-sidenav>
     </div>
 
-    <div layout="column">
+    <div ng-controller="SearchItemController as sic" layout="row">
+      <md-autocomplete md-search-text="" md-items="item in sic.querySearch(sic.searchText)" md-no-cache="sic.noCache" md-selected-item="sic.selectedItem" md-search-text="sic.searchText" md-item-text="item.name" md-min-length="0" placeholder="Enter in an item to locate." md-menu-class="autocomplete-custom-template">
+        <md-item-template>
+          <span md-highlight-text="sic.searchText" md-highlight-flags="^i">{{item.content}}</span>
+        </md-item-template>
+      </md-autocomplete>
+    </div>
+
+    <div layout="column" >
       <md-tabs md-border-bottom flex='50'>
         <md-tab label="Visual">
           <div ng-controller="MainController as main" layout="column">
