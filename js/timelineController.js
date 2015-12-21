@@ -100,7 +100,7 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
 
   $scope.$on('handlePublish', function(){
     timeline.setSelection(sharedService.item.id);
-    timeline.focus(sharedService.item.id);
+    focusItem(sharedService.item);
   });
 
   vm.periodClick = function(period, ev) {
@@ -158,16 +158,24 @@ app.controller('MainController', function($scope, $http, sharedService, itemMana
         }],
         ['Focus', function ($itemScope) {
           selectedItem = itemManager.get(timeline.getSelection()[0]);
-          timeline.focus(selectedItem.id);
-          console.log(selectedItem);
-          // if item is a range, then change window size to the range of the item
-          if (selectedItem.type == 'range') {
-            timeline.setWindow(selectedItem.start, selectedItem.end);
-          }
+          focusItem(selectedItem);
         }]
       ];
     }
   };
+
+  var focusItem = function(item) {
+    console.log('focused');
+    timeline.focus(item.id);
+    // if item is a range, then change window size to roughly the range of the item
+    if (item.type == 'range') {
+      var startDate = new Date(item.start);
+      var endDate = new Date(item.end);
+      var diff = (endDate.getTime() - startDate.getTime())/10;
+      timeline.setWindow(new Date(startDate.getTime() - diff),
+        new Date(endDate.getTime() + diff));
+    }
+  }
 
   $scope.toastPosition = {
     bottom: false,
